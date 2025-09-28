@@ -223,11 +223,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (chapterSettingsCard.style.display === 'none') {
             pairsContainer.style.display = 'none';
             chapterSettingsCard.style.display = 'block';
-            addPairBtn.style.display = 'none';
+            addPairBtn.disabled = true;
+            saveSettingsBtn.textContent = 'Lưu và quay lại';
         } else {
             pairsContainer.style.display = 'flex';
             chapterSettingsCard.style.display = 'none';
-            addPairBtn.style.display = 'inline-block';
+            addPairBtn.disabled = false;
+            saveSettingsBtn.textContent = 'Lưu cài đặt';
         }
     }
 
