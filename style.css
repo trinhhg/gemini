@@ -43,7 +43,7 @@ header {
     width: 100%;
     max-width: 1200px;
     margin-bottom: 10px;
-    padding: 5px 0; /* Thu gọn header */
+    padding: 5px 0;
 }
 
 .web-name {
@@ -98,7 +98,7 @@ header {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Ngăn thanh cuộn nội bộ */
+    overflow: hidden;
 }
 
 .tab-content {
@@ -135,8 +135,7 @@ header {
 
 .btn-danger {
     background-color: var(--danger-color);
-    height: 42px;
-    line-height: 42px;
+    text-align: center; /* Căn giữa chữ Xóa */
 }
 
 .btn-danger:hover:not(:disabled) {
@@ -155,7 +154,7 @@ header {
     width: 100%;
 }
 
-input[type="text"], select {
+input[type="text"], select, textarea {
     width: 100%;
     padding: 12px 15px;
     border: 2px solid var(--input-border-color);
@@ -163,10 +162,10 @@ input[type="text"], select {
     font-size: 1rem;
     font-family: var(--font-family);
     transition: border-color 0.2s;
-    height: 42px;
+    height: 42px; /* Cố định chiều cao input */
 }
 
-input[type="text"]:focus, select:focus {
+input[type="text"]:focus, select:focus, textarea:focus {
     border-color: var(--primary-color);
     outline: none;
 }
@@ -255,18 +254,18 @@ textarea {
 
 .toggle-switch .slider {
     position: relative;
-    width: 40px;
-    height: 20px;
+    width: 50px; /* To tròn hơn */
+    height: 25px; /* To tròn hơn */
     background-color: #ccc;
-    border-radius: 10px;
+    border-radius: 25px; /* Tròn hơn */
     transition: background-color 0.2s;
 }
 
 .toggle-switch .slider:before {
     position: absolute;
-    content: "M"; /* Ký hiệu Match Case */
-    height: 16px;
-    width: 16px;
+    content: "M"; /* Ký hiệu M cho Match Case */
+    height: 21px;
+    width: 21px;
     left: 2px;
     bottom: 2px;
     background-color: white;
@@ -280,17 +279,23 @@ textarea {
 }
 
 .toggle-switch input:checked + .slider:before {
-    content: "W"; /* Ký hiệu Find Whole Word Only */
-    transform: translateX(20px);
+    transform: translateX(25px);
 }
 
 .toggle-switch input:checked + .slider {
-    background-color: var(--primary-color);
+    background-color: var(--primary-color); /* Xanh dương cho Match */
+}
+
+.toggle-switch:nth-child(2) .slider:before {
+    content: "F"; /* Ký hiệu F cho Find Whole Word Only */
+}
+
+.toggle-switch:nth-child(2) input:checked + .slider {
+    background-color: var(--success-color); /* Xanh lá cho Find Whole Word Only */
 }
 
 .toggle-switch label {
-    margin-left: 5px;
-    font-size: 0.9rem;
+    display: none; /* Xóa chữ label */
 }
 
 .delete-pair-btn {
@@ -306,6 +311,7 @@ textarea {
     min-width: 60px;
     height: 42px;
     line-height: 42px;
+    text-align: center;
 }
 
 .delete-pair-btn:hover {
@@ -366,7 +372,7 @@ textarea {
 /* --- Tab 2: Replace --- */
 .replace-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
     height: 100%;
     flex-grow: 1;
@@ -398,12 +404,11 @@ textarea {
 }
 
 .output-area {
-    flex-grow: 0;
+    flex-grow: 1;
     border: 2px solid var(--input-border-color);
     border-radius: 8px;
     padding: 12px 15px;
-    height: 300px; /* Cố định chiều cao */
-    overflow-y: auto; /* Thanh cuộn dọc */
+    overflow-y: auto;
     background-color: #fdfdfd;
     word-break: break-word;
     white-space: pre-wrap;
@@ -453,17 +458,18 @@ textarea {
 }
 
 #split-input {
-    height: 300px; /* Cố định chiều cao */
-    overflow-y: auto;
+    min-height: 150px;
+    margin-bottom: 10px;
 }
 
 #split-output-container {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
     gap: 15px;
+    overflow-y: auto;
     flex-grow: 1;
+    align-content: flex-start;
     padding-top: 10px;
-    word-break: break-word;
-    white-space: pre-wrap;
 }
 
 .split-result-box {
@@ -474,12 +480,15 @@ textarea {
     flex-direction: column;
     gap: 10px;
     background-color: #fdfdfd;
-    height: 300px; /* Cố định chiều cao */
-    overflow-y: auto;
+    overflow: hidden;
+    flex: 1 1 200px; /* Linh hoạt cho bố cục */
 }
 
 .split-result-box .content-wrapper {
     flex-grow: 1;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 5px;
 }
 
 .split-result-box .content {
@@ -498,15 +507,18 @@ textarea {
 
 /* Layout chia chương (Chia N) */
 .split-layout-2 {
-    grid-template-columns: 1fr 1fr 1fr; /* Ô gốc + 2 kết quả */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
 }
 
 .split-layout-3 {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
 .split-layout-4 {
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
 }
 
 .split-layout-5,
@@ -515,7 +527,13 @@ textarea {
 .split-layout-8,
 .split-layout-9,
 .split-layout-10 {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.split-result-box {
+    flex: 1 1 auto;
+    min-width: 200px;
 }
 
 /* --- Responsive --- */
@@ -529,7 +547,7 @@ textarea {
     .split-layout-8,
     .split-layout-9,
     .split-layout-10 {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
 }
 
@@ -539,7 +557,7 @@ textarea {
     }
 
     .web-name {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
 
     .mode-management-row,
@@ -581,4 +599,28 @@ textarea {
     .split-layout-10 {
         grid-template-columns: 1fr;
     }
+
+    .split-result-box .content-wrapper {
+        max-height: 150px;
     }
+}
+
+/* Popup for notifications */
+.popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: var(--success-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
