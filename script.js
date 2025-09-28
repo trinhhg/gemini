@@ -1,628 +1,622 @@
-:root {
-    --primary-color: #0078d4;
-    --primary-hover-color: #3399ff;
-    --success-color: #107c10;
-    --danger-color: #d13438;
-    --bg-color: #f0f2f5;
-    --card-bg-color: #ffffff;
-    --text-color: #333333;
-    --border-color: #e6e6e6;
-    --input-border-color: #a0a0a0;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --highlight-color: #dbeeff;
-    --font-family: 'Inter', sans-serif;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    width: 100%;
-    min-height: 100vh; /* Thay vì height: 100vh để cho phép cuộn */
-    font-family: var(--font-family);
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-size: 16px;
-    line-height: 1.6;
-    overflow-x: hidden;
-    overflow-y: auto; /* Cho phép cuộn dọc toàn trang */
-}
-
-.app-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
-    padding: 10px;
-    align-items: center;
-}
-
-header {
-    width: 100%;
-    max-width: 1200px;
-    margin-bottom: 10px;
-    padding: 5px 0;
-}
-
-.web-name {
-    text-align: center;
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 3px;
-}
-
-.license-info {
-    text-align: left;
-    font-size: 0.8rem;
-    color: #666;
-    margin-bottom: 5px;
-}
-
-.tabs {
-    display: flex;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto 10px auto;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.tab-link {
-    flex-grow: 1;
-    padding: 10px 8px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #555;
-    transition: all 0.2s ease-in-out;
-    border-bottom: 3px solid transparent;
-}
-
-.tab-link.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-}
-
-.card {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: var(--card-bg-color);
-    border-radius: 24px;
-    box-shadow: 0 8px 20px var(--shadow-color);
-    border: none;
-    padding: 20px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto; /* Cho phép cuộn trong card nếu cần */
-}
-
-.tab-content {
-    display: none;
-    flex-direction: column;
-    height: 100%;
-}
-
-.tab-content.active {
-    display: flex;
-}
-
-/* --- Controls & Buttons --- */
-.btn {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    background-color: var(--primary-color);
-    color: white;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-weight: 500;
-}
-
-.btn:hover:not(:disabled) {
-    background-color: var(--primary-hover-color);
-}
-
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.btn-danger {
-    background-color: var(--danger-color);
-    text-align: center; /* Căn giữa chữ Xóa */
-}
-
-.btn-danger:hover:not(:disabled) {
-    background-color: #e54c50;
-}
-
-.btn-success {
-    background-color: var(--success-color);
-}
-
-.btn-success:hover:not(:disabled) {
-    background-color: #149614;
-}
-
-.full-width-btn {
-    width: 100%;
-}
-
-input[type="text"], select, textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid var(--input-border-color);
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: var(--font-family);
-    transition: border-color 0.2s;
-    height: 42px; /* Cố định chiều cao input */
-}
-
-input[type="text"]:focus, select:focus, textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
-}
-
-textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid var(--input-border-color);
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: var(--font-family);
-    resize: none; /* Ngăn resize */
-    height: 300px; /* Cố định chiều cao */
-    overflow-y: auto; /* Thanh cuộn dọc */
-}
-
-/* --- Tab 1: Settings --- */
-.control-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.mode-select-row {
-    margin-bottom: 20px;
-}
-
-.control-label {
-    white-space: nowrap;
-}
-
-.mode-dropdown {
-    width: auto;
-    min-width: 150px;
-    max-width: 250px;
-    flex-grow: 0;
-}
-
-.settings-actions {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.replace-pairs-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
-    max-height: 45vh;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.replace-pair {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 5px 0;
-    border-bottom: 1px dashed #f0f0f0;
-}
-
-.replace-pair input {
-    flex-grow: 1;
-    height: 42px;
-}
-
-.pair-checkboxes {
-    display: flex;
-    gap: 15px;
-    min-width: 250px;
-}
-
-.toggle-switch {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.toggle-switch input {
-    display: none;
-}
-
-.toggle-switch .slider {
-    position: relative;
-    width: 50px; /* To tròn hơn */
-    height: 25px; /* To tròn hơn */
-    background-color: #ccc;
-    border-radius: 25px; /* Tròn hơn */
-    transition: background-color 0.2s;
-}
-
-.toggle-switch .slider:before {
-    position: absolute;
-    content: "M"; /* Ký hiệu M cho Match Case */
-    height: 21px;
-    width: 21px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    border-radius: 50%;
-    transition: transform 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    color: #333;
-}
-
-.toggle-switch input:checked + .slider:before {
-    transform: translateX(25px);
-}
-
-.toggle-switch input:checked + .slider {
-    background-color: var(--primary-color); /* Xanh dương cho Match */
-}
-
-.toggle-switch:nth-child(2) .slider:before {
-    content: "F"; /* Ký hiệu F cho Find Whole Word Only */
-}
-
-.toggle-switch:nth-child(2) input:checked + .slider {
-    background-color: var(--success-color); /* Xanh lá cho Find Whole Word Only */
-}
-
-.toggle-switch label {
-    display: none; /* Xóa chữ label */
-}
-
-.delete-pair-btn {
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    border: 1px solid var(--danger-color);
-    background-color: var(--danger-color);
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    min-width: 60px;
-    height: 42px;
-    line-height: 42px;
-    text-align: center;
-}
-
-.delete-pair-btn:hover {
-    background-color: #e54c50;
-    border-color: #e54c50;
-}
-
-#chapter-settings-card {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 20px;
-    background-color: #fafafa;
-}
-
-.chapter-settings-card .hint {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.chapter-keywords {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.chapter-keywords input {
-    flex-grow: 1;
-}
-
-.chapter-keywords-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.keyword-tag {
-    background-color: #eef;
-    padding: 5px 12px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.delete-keyword-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--danger-color);
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 0;
-}
-
-/* --- Tab 2: Replace --- */
-.replace-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    height: 100%;
-    flex-grow: 1;
-}
-
-.replace-column {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.toolbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px 0;
-}
-
-.toolbar.text-center {
-    justify-content: center;
-}
-
-.word-count-display {
-    font-weight: 500;
-    color: #555;
-    background-color: #eee;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-.output-area {
-    flex-grow: 1;
-    border: 2px solid var(--input-border-color);
-    border-radius: 8px;
-    padding: 12px 15px;
-    overflow-y: auto;
-    background-color: #fdfdfd;
-    word-break: break-word;
-    white-space: pre-wrap;
-    min-height: 200px; /* Đảm bảo chiều cao tối thiểu */
-    max-height: 300px; /* Giới hạn chiều cao để cuộn */
-}
-
-.output-area p {
-    margin-bottom: 1em;
-}
-
-.output-area p:last-child {
-    margin-bottom: 0;
-}
-
-.highlight {
-    background-color: var(--highlight-color);
-    border-radius: 3px;
-    padding: 0 2px;
-    font-weight: 500;
-}
-
-/* --- Tab 3: Chia Chương --- */
-.split-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.split-controls .btn {
-    min-width: 80px;
-    border-radius: 8px;
-    background-color: #ccc;
-    color: var(--text-color);
-    border: 1px solid #ccc;
-}
-
-.split-controls .btn:hover {
-    background-color: #bbb;
-    border-color: #bbb;
-}
-
-.split-controls .btn.active {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: white;
-}
-
-#split {
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* Đảm bảo card con cuộn */
-}
-
-#split-input {
-    min-height: 150px;
-    margin-bottom: 15px; /* Khoảng cách với output */
-}
-
-#split-output-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 cột cho 2 ô output */
-    gap: 15px;
-    flex-grow: 1;
-    overflow-y: auto; /* Cuộn nếu nội dung dài */
-}
-
-.split-result-box {
-    border: 2px solid var(--input-border-color);
-    border-radius: 12px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #fdfdfd;
-    overflow-y: auto; /* Cuộn nội dung nếu quá dài */
-    min-height: 200px; /* Đảm bảo chiều cao tối thiểu */
-    max-height: 300px; /* Giới hạn chiều cao để cuộn */
-}
-
-.split-result-box .content {
-    white-space: pre-wrap;
-    word-break: break-word;
-    margin: 0;
-    flex-grow: 1; /* Điền đầy không gian */
-}
-
-.split-result-box h4 {
-    font-weight: 700;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-    margin-top: 0;
-    white-space: pre-wrap;
-}
-
-/* Layout chia chương (Chia N) */
-.split-layout-2 {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-
-.split-layout-3 {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
-
-.split-layout-4 {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-}
-
-.split-layout-5,
-.split-layout-6,
-.split-layout-7,
-.split-layout-8,
-.split-layout-9,
-.split-layout-10 {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.split-result-box {
-    flex: 1 1 auto;
-    min-width: 200px;
-}
-
-/* --- Responsive --- */
-@media (max-width: 1024px) {
-    .split-layout-2,
-    .split-layout-3,
-    .split-layout-4,
-    .split-layout-5,
-    .split-layout-6,
-    .split-layout-7,
-    .split-layout-8,
-    .split-layout-9,
-    .split-layout-10 {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
-}
-
-@media (max-width: 768px) {
-    .app-container {
-        padding: 10px;
+document.addEventListener("DOMContentLoaded", () => {
+    // ====================== DOM ELEMENTS ======================
+    const tabs = document.querySelectorAll('.tab-link');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    const elModeSelect = document.getElementById('mode-select');
+    const elAddModeBtn = document.getElementById('add-mode-btn');
+    const elCopyModeBtn = document.getElementById('copy-mode-btn');
+    const elRenameModeBtn = document.getElementById('rename-mode-btn');
+    const elDeleteModeBtn = document.getElementById('delete-mode-btn');
+    const elImportSettingsBtn = document.getElementById('import-settings-btn');
+    const elImportFileInput = document.getElementById('import-file-input');
+    const elExportSettingsBtn = document.getElementById('export-settings-btn');
+    const elChapterSettingsBtn = document.getElementById('chapter-settings-btn');
+    const elAddPairBtn = document.getElementById('add-pair-btn');
+    const elSaveSettingsBtn = document.getElementById('save-settings-btn');
+    const elPairsContainer = document.getElementById('replace-pairs-container');
+    const elChapterSettingsCard = document.getElementById('chapter-settings-card');
+    const elChapterKeywordInput = document.getElementById('chapter-keyword-input');
+    const elAddKeywordBtn = document.getElementById('add-keyword-btn');
+    const elKeywordsListContainer = document.getElementById('chapter-keywords-list');
+
+    const elReplaceInput = document.getElementById('replace-input');
+    const elReplaceWordCountDisplay = document.getElementById('replace-word-count');
+    const elReplaceBtn = document.getElementById('replace-btn');
+    const elReplaceOutput = document.getElementById('replace-output');
+    const elOutputWordCountDisplay = document.getElementById('output-word-count');
+    const elCopyOutputBtn = document.getElementById('copy-output-btn');
+
+    const elSplitControls = document.querySelector('.split-controls');
+    const elSplitInput = document.getElementById('split-input');
+    const elSplitInputWordCountDisplay = document.getElementById('split-input-word-count');
+    const elSplitOutputContainer = document.getElementById('split-output-container');
+
+    const elPopup = document.getElementById('popup');
+
+    // ====================== STATE ======================
+    let settings = {
+        modes: {
+            'Mặc định': { pairs: [{ find: '', replace: '', matchCase: false, wholeWord: false }] }
+        },
+        activeMode: 'Mặc định',
+        chapterKeywords: ['Chương', 'Chapter', 'Phần', 'Hồi']
+    };
+
+    let popupTimeout = null;
+    let currentNumSplits = 2;
+
+    // ====================== INITIALIZATION ======================
+    loadSettings();
+    updateUI();
+    setupEventListeners();
+    createSplitButtons();
+
+    // Auto-click default split button (Chia 2) and render 2 output placeholders
+    const defaultSplitBtn = elSplitControls.querySelector('[data-splits="2"]');
+    if (defaultSplitBtn) {
+        defaultSplitBtn.click();
+        renderPlaceholders(2); // Render 2 output boxes
     }
 
-    .web-name {
-        font-size: 2rem;
+    // ====================== UI UPDATE FUNCTIONS ======================
+    function updateUI() {
+        updateModeSelect();
+        renderCurrentModeSettings();
+        renderChapterKeywords();
     }
 
-    .mode-management-row,
-    .settings-actions,
-    .chapter-keywords {
-        flex-direction: column;
-        align-items: stretch;
+    function switchTab(targetTabId) {
+        tabContents.forEach(content => {
+            content.classList.toggle('active', content.id === targetTabId);
+        });
+        tabs.forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.tab === targetTabId);
+        });
+        if (targetTabId === 'split' && defaultSplitBtn) {
+            const activeSplitBtn = elSplitControls.querySelector('.active');
+            (activeSplitBtn || defaultSplitBtn)?.click();
+            renderPlaceholders(2); // Always render 2 output boxes on tab switch
+        }
     }
 
-    .replace-pair {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 5px;
+    function updateModeSelect() {
+        if (!elModeSelect) return;
+        elModeSelect.innerHTML = '';
+        Object.keys(settings.modes).forEach(modeName => {
+            const option = document.createElement('option');
+            option.value = modeName;
+            option.textContent = modeName;
+            if (modeName === settings.activeMode) {
+                option.selected = true;
+            }
+            elModeSelect.appendChild(option);
+        });
     }
 
-    .pair-checkboxes {
-        flex-direction: row;
-        justify-content: space-around;
-        min-width: auto;
-        width: 100%;
+    function renderCurrentModeSettings() {
+        const mode = settings.modes[settings.activeMode];
+        if (!mode) return;
+
+        elPairsContainer.innerHTML = '';
+        mode.pairs.forEach((pair) => {
+            const pairElement = createPairElement(pair.find, pair.replace, pair.matchCase, pair.wholeWord);
+            elPairsContainer.appendChild(pairElement);
+        });
     }
 
-    .replace-grid {
-        grid-template-columns: 1fr;
+    function createPairElement(findVal = '', replaceVal = '', matchCase = false, wholeWord = false) {
+        const div = document.createElement('div');
+        div.className = 'replace-pair';
+        div.innerHTML = `
+            <input type="text" class="find-input" placeholder="Tìm" value="${escapeHtml(findVal)}">
+            <input type="text" class="replace-input" placeholder="Thay thế" value="${escapeHtml(replaceVal)}">
+            <label class="toggle-switch" aria-label="Phân biệt hoa thường">
+                <input type="checkbox" class="match-case-checkbox" ${matchCase ? 'checked' : ''}>
+                <span class="slider"></span>
+            </label>
+            <label class="toggle-switch" aria-label="Toàn bộ từ">
+                <input type="checkbox" class="whole-word-checkbox" ${wholeWord ? 'checked' : ''}>
+                <span class="slider"></span>
+            </label>
+            <button type="button" class="delete-pair-btn btn btn-danger">Xóa</button>
+        `;
+        return div;
     }
 
-    .card {
-        padding: 15px;
+    function createSplitButtons() {
+        elSplitControls.innerHTML = '';
+        for (let i = 2; i <= 10; i++) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'btn split-btn';
+            button.textContent = `Chia ${i}`;
+            button.dataset.splits = i;
+            elSplitControls.appendChild(button);
+        }
+        const chiaChuongBtn = document.createElement('button');
+        chiaChuongBtn.type = 'button';
+        chiaChuongBtn.className = 'btn chia-chuong-btn';
+        chiaChuongBtn.textContent = 'Chia Chương';
+        elSplitControls.appendChild(chiaChuongBtn);
     }
 
-    .split-layout-2,
-    .split-layout-3,
-    .split-layout-4,
-    .split-layout-5,
-    .split-layout-6,
-    .split-layout-7,
-    .split-layout-8,
-    .split-layout-9,
-    .split-layout-10 {
-        grid-template-columns: 1fr;
+    function renderChapterKeywords() {
+        elKeywordsListContainer.innerHTML = '';
+        settings.chapterKeywords.forEach(keyword => {
+            const tag = document.createElement('div');
+            tag.className = 'keyword-tag';
+            tag.innerHTML = `
+                <span>${escapeHtml(keyword)}</span>
+                <button type="button" class="delete-keyword-btn" data-keyword="${escapeHtml(keyword)}">✖</button>
+            `;
+            elKeywordsListContainer.appendChild(tag);
+        });
     }
 
-    .split-result-box .content {
-        max-height: 150px;
+    function renderPlaceholders(num) {
+        elSplitOutputContainer.innerHTML = '';
+        for (let i = 1; i <= num; i++) {
+            const box = document.createElement('div');
+            box.className = 'split-result-box';
+            box.innerHTML = `
+                <h4>Kết quả chương ${i}</h4>
+                <div class="content">Kết quả chương ${i} sẽ xuất hiện ở đây.</div>
+                <div class="toolbar text-center">
+                    <span class="word-count-display">Words: 0</span>
+                </div>
+                <button type="button" class="btn copy-split-btn full-width-btn" data-chapter-index="${i-1}">Sao chép ${i}</button>
+            `;
+            elSplitOutputContainer.appendChild(box);
+        }
     }
-}
 
-/* Popup for notifications */
-.popup {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: var(--success-color);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    display: none;
-    animation: fadeIn 0.3s;
-}
+    function renderSplitOutput(chapters) {
+        elSplitOutputContainer.innerHTML = '';
+        chapters.forEach((chapter, index) => {
+            const box = document.createElement('div');
+            box.className = 'split-result-box';
+            const contentHtml = escapeHtml(chapter.content || '').split('\n\n').map(p => `<p>${p}</p>`).join('');
+            box.innerHTML = `
+                <h4>${escapeHtml(chapter.title || `Kết quả chương ${index + 1}`)}</h4>
+                <div class="content">${contentHtml}</div>
+                <div class="toolbar text-center">
+                    <span class="word-count-display">Words: ${countWords(chapter.content || '')}</span>
+                </div>
+                <button type="button" class="btn copy-split-btn full-width-btn" data-chapter-index="${index}">Sao chép ${index + 1}</button>
+            `;
+            elSplitOutputContainer.appendChild(box);
+        });
+    }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+    // ====================== DATA HANDLING FUNCTIONS ======================
+    function saveSettingsToUI() {
+        const currentMode = settings.modes[settings.activeMode];
+        if (!currentMode) return;
+
+        const newPairs = [];
+        elPairsContainer.querySelectorAll('.replace-pair').forEach(pairEl => {
+            const find = pairEl.querySelector('.find-input').value;
+            const replace = pairEl.querySelector('.replace-input').value;
+            const matchCase = pairEl.querySelector('.match-case-checkbox').checked;
+            const wholeWord = pairEl.querySelector('.whole-word-checkbox').checked;
+            newPairs.push({ find, replace, matchCase, wholeWord });
+        });
+        currentMode.pairs = newPairs;
+        saveSettings();
+        showPopup('Đã lưu cài đặt cho chế độ: ' + settings.activeMode);
+        if (elChapterSettingsCard?.style.display !== 'none') {
+            toggleChapterSettings();
+        }
+    }
+
+    function saveSettings() {
+        try {
+            localStorage.setItem('textToolSettings', JSON.stringify(settings));
+        } catch (err) {
+            console.error('Lưu settings thất bại', err);
+            showPopup('Lưu cài đặt thất bại, có thể bộ nhớ đầy.');
+        }
+    }
+
+    function loadSettings() {
+        try {
+            const saved = localStorage.getItem('textToolSettings');
+            if (saved) {
+                const loadedSettings = JSON.parse(saved);
+                Object.keys(loadedSettings.modes).forEach(modeName => {
+                    loadedSettings.modes[modeName].pairs.forEach(pair => {
+                        pair.matchCase = !!pair.matchCase;
+                        pair.wholeWord = !!pair.wholeWord;
+                    });
+                });
+                if (!Array.isArray(loadedSettings.chapterKeywords) || loadedSettings.chapterKeywords.length === 0) {
+                    loadedSettings.chapterKeywords = ['Chương', 'Chapter', 'Phần', 'Hồi'];
+                }
+                settings = loadedSettings;
+            }
+        } catch (err) {
+            console.error('Không thể load settings', err);
+            showPopup('Tải cài đặt thất bại.');
+        }
+    }
+
+    function showPopup(message) {
+        if (!elPopup) return;
+        clearTimeout(popupTimeout);
+        elPopup.textContent = message;
+        elPopup.style.display = 'block';
+        popupTimeout = setTimeout(() => {
+            elPopup.style.display = 'none';
+        }, 3000);
+    }
+
+    function toggleChapterSettings() {
+        if (!elChapterSettingsCard) return;
+        const isHidden = elChapterSettingsCard.style.display === 'none';
+        elPairsContainer.style.display = isHidden ? 'none' : 'flex';
+        elChapterSettingsCard.style.display = isHidden ? 'block' : 'none';
+        if (elAddPairBtn) elAddPairBtn.style.display = isHidden ? 'none' : 'inline-block';
+    }
+
+    // ====================== EVENT HANDLERS ======================
+    function handleTabClick(e) {
+        const targetTabId = e.currentTarget.dataset.tab;
+        if (targetTabId) switchTab(targetTabId);
+    }
+
+    function handleModeChange(e) {
+        settings.activeMode = e.target.value;
+        renderCurrentModeSettings();
+    }
+
+    function handleAddMode() {
+        const name = prompt('Nhập tên chế độ mới:', 'Chế độ mới');
+        if (!name || settings.modes[name]) {
+            showPopup('Tên chế độ không hợp lệ hoặc đã tồn tại!');
+            return;
+        }
+        settings.modes[name] = { pairs: [{ find: '', replace: '', matchCase: false, wholeWord: false }] };
+        settings.activeMode = name;
+        saveSettings();
+        updateUI();
+    }
+
+    function handleCopyMode() {
+        const newName = prompt('Nhập tên cho chế độ sao chép:', `${settings.activeMode} (copy)`);
+        if (!newName || settings.modes[newName]) {
+            showPopup('Tên chế độ không hợp lệ hoặc đã tồn tại!');
+            return;
+        }
+        settings.modes[newName] = JSON.parse(JSON.stringify(settings.modes[settings.activeMode]));
+        settings.activeMode = newName;
+        saveSettings();
+        updateUI();
+    }
+
+    function handleRenameMode() {
+        const oldName = settings.activeMode;
+        const newName = prompt('Nhập tên mới:', oldName);
+        if (!newName || newName === oldName || settings.modes[newName]) {
+            showPopup('Tên mới không hợp lệ hoặc đã tồn tại.');
+            return;
+        }
+        settings.modes[newName] = settings.modes[oldName];
+        delete settings.modes[oldName];
+        settings.activeMode = newName;
+        saveSettings();
+        updateUI();
+    }
+
+    function handleDeleteMode() {
+        if (Object.keys(settings.modes).length <= 1) {
+            showPopup('Không thể xóa chế độ cuối cùng.');
+            return;
+        }
+        if (confirm(`Bạn có chắc muốn xóa chế độ "${settings.activeMode}"?`)) {
+            delete settings.modes[settings.activeMode];
+            settings.activeMode = Object.keys(settings.modes)[0];
+            saveSettings();
+            updateUI();
+        }
+    }
+
+    function handleExportSettings() {
+        try {
+            const dataStr = JSON.stringify(settings, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', 'th_settings.json');
+            document.body.appendChild(linkElement);
+            linkElement.click();
+            document.body.removeChild(linkElement);
+        } catch (err) {
+            console.error('Xuất cài đặt thất bại', err);
+            showPopup('Xuất cài đặt thất bại.');
+        }
+    }
+
+    function handleImportSettings(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedSettings = JSON.parse(e.target.result);
+                if (importedSettings.modes && importedSettings.activeMode && Object.keys(importedSettings.modes).length > 0) {
+                    settings = importedSettings;
+                    saveSettings();
+                    updateUI();
+                    showPopup('Nhập cài đặt thành công!');
+                } else {
+                    showPopup('Tệp cài đặt không hợp lệ.');
+                }
+            } catch (error) {
+                console.error('Lỗi khi đọc tệp JSON', error);
+                showPopup('Lỗi khi đọc tệp JSON.');
+            }
+        };
+        reader.readAsText(file);
+        event.target.value = '';
+    }
+
+    function handleReplace() {
+        const mode = settings.modes[settings.activeMode];
+        const inputText = elReplaceInput.value;
+        if (!mode || !inputText) return;
+
+        const resultHTML = performReplacement(inputText, mode.pairs);
+        elReplaceOutput.innerHTML = resultHTML;
+        elOutputWordCountDisplay.textContent = `Số từ: ${countWords(elReplaceOutput.innerText)}`;
+        elReplaceInput.value = '';
+        elReplaceWordCountDisplay.textContent = 'Số từ: 0';
+    }
+
+    function handleSplit(e) {
+        const target = e.target.closest('.split-btn, .chia-chuong-btn');
+        if (!target) return;
+
+        if (target.classList.contains('split-btn')) {
+            elSplitControls.querySelectorAll('.split-btn').forEach(btn => btn.classList.remove('active'));
+            target.classList.add('active');
+            currentNumSplits = parseInt(target.dataset.splits, 10);
+            renderPlaceholders(currentNumSplits - 1); // Render (numSplits - 1) output boxes
+        } else if (target.classList.contains('chia-chuong-btn')) {
+            const text = elSplitInput.value;
+            if (!text || !text.trim()) {
+                showPopup('Vui lòng nhập văn bản để chia chương.');
+                return;
+            }
+            const chapters = splitChapter(text, currentNumSplits, settings.chapterKeywords);
+            renderSplitOutput(chapters.slice(0, currentNumSplits - 1)); // Limit to (numSplits - 1) chapters
+        }
+    }
+
+    function setupEventListeners() {
+        tabs.forEach(tab => tab.addEventListener('click', handleTabClick));
+        if (elModeSelect) elModeSelect.addEventListener('change', handleModeChange);
+        if (elAddModeBtn) elAddModeBtn.addEventListener('click', handleAddMode);
+        if (elCopyModeBtn) elCopyModeBtn.addEventListener('click', handleCopyMode);
+        if (elRenameModeBtn) elRenameModeBtn.addEventListener('click', handleRenameMode);
+        if (elDeleteModeBtn) elDeleteModeBtn.addEventListener('click', handleDeleteMode);
+        if (elExportSettingsBtn) elExportSettingsBtn.addEventListener('click', handleExportSettings);
+        if (elImportSettingsBtn) elImportSettingsBtn.addEventListener('click', () => elImportFileInput.click());
+        if (elImportFileInput) elImportFileInput.addEventListener('change', handleImportSettings);
+        if (elChapterSettingsBtn) elChapterSettingsBtn.addEventListener('click', toggleChapterSettings);
+
+        if (elAddPairBtn) elAddPairBtn.addEventListener('click', () => {
+            elPairsContainer.insertBefore(createPairElement(), elPairsContainer.firstChild);
+        });
+
+        if (elSaveSettingsBtn) elSaveSettingsBtn.addEventListener('click', saveSettingsToUI);
+
+        if (elAddKeywordBtn) elAddKeywordBtn.addEventListener('click', () => {
+            const newKeyword = elChapterKeywordInput.value.trim();
+            if (newKeyword && !settings.chapterKeywords.includes(newKeyword)) {
+                settings.chapterKeywords.push(newKeyword);
+                saveSettings();
+                renderChapterKeywords();
+                elChapterKeywordInput.value = '';
+            }
+        });
+
+        if (elPairsContainer) {
+            elPairsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('delete-pair-btn')) {
+                    e.target.closest('.replace-pair').remove();
+                }
+            });
+        }
+
+        if (elKeywordsListContainer) {
+            elKeywordsListContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('delete-keyword-btn')) {
+                    const keywordToRemove = e.target.dataset.keyword;
+                    settings.chapterKeywords = settings.chapterKeywords.filter(k => k !== keywordToRemove);
+                    saveSettings();
+                    renderChapterKeywords();
+                }
+            });
+        }
+
+        if (elReplaceInput) {
+            elReplaceInput.addEventListener('input', () => {
+                elReplaceWordCountDisplay.textContent = `Số từ: ${countWords(elReplaceInput.value)}`;
+            });
+        }
+        if (elReplaceBtn) elReplaceBtn.addEventListener('click', handleReplace);
+        if (elCopyOutputBtn) elCopyOutputBtn.addEventListener('click', (e) => {
+            copyToClipboard(elReplaceOutput.innerText, e.target);
+        });
+
+        if (elSplitInput) {
+            elSplitInput.addEventListener('input', () => {
+                elSplitInputWordCountDisplay.textContent = `Số từ: ${countWords(elSplitInput.value)}`;
+            });
+        }
+        if (elSplitControls) elSplitControls.addEventListener('click', handleSplit);
+
+        if (elSplitOutputContainer) {
+            elSplitOutputContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('copy-split-btn')) {
+                    const chapterIndex = e.target.dataset.chapterIndex ? parseInt(e.target.dataset.chapterIndex, 10) : null;
+                    const box = e.target.closest('.split-result-box');
+                    if (!box) return;
+                    const contentEl = box.querySelector('.content');
+                    if (!contentEl) return;
+                    const raw = contentEl.innerHTML.replace(/<\/p>\s*<p>/g, '\n\n').replace(/<\/?p>|<br>/g, '\n').replace(/&quot;/g, '"');
+                    copyToClipboard(raw, e.target);
+                }
+            });
+        }
+    }
+
+    // ====================== HELPERS / UTILITIES ======================
+    function countWords(text) {
+        if (!text) return 0;
+        const cleaned = text.trim().replace(/\s+/g, ' ');
+        return cleaned ? cleaned.split(' ').length : 0;
+    }
+
+    function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function escapeHtml(unsafe) {
+        if (unsafe === null || unsafe === undefined) return '';
+        return String(unsafe)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function performReplacement(inputText, pairs) {
+        if (!inputText) return '';
+        let result = inputText;
+
+        pairs.forEach(pair => {
+            if (!pair.find) return;
+            const escapedFind = escapeRegExp(pair.find);
+            const boundary = pair.wholeWord ? '(^|[^\\p{L}\\p{N}_])' : '';
+            const flags = pair.matchCase ? 'gu' : 'giu';
+            try {
+                const regex = new RegExp(`${boundary}${escapedFind}${boundary ? '($|[^\\p{L}\\p{N}_])' : ''}`, flags);
+                result = result.replace(regex, (match, prefix = '', suffix = '') => {
+                    return (prefix || '') + `<span class="highlight">${escapeHtml(pair.replace)}</span>` + (suffix || '');
+                });
+            } catch (err) {
+                console.error('Regex lỗi:', err);
+                result = result.split(pair.find).join(`<span class="highlight">${escapeHtml(pair.replace)}</span>`);
+            }
+        });
+
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = result;
+        const walker = document.createTreeWalker(tempDiv, NodeFilter.SHOW_TEXT);
+        let node;
+        while (node = walker.nextNode()) {
+            if (!node.parentElement.closest('.highlight')) {
+                node.textContent = escapeHtml(node.textContent);
+            }
+        }
+        result = tempDiv.innerHTML;
+
+        return result.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+    }
+
+    function splitChapter(text, numSplits = 2, keywords = ['Chương', 'Chapter']) {
+        const paragraphs = text.split(/\n\s*\n/).map(p => p.trim()).filter(p => p.length > 0);
+        const chapters = [];
+        let current = { title: '', content: '' };
+
+        const pushCurrent = () => {
+            if (current.content.trim() || current.title) {
+                chapters.push({ title: current.title || `Chương ${chapters.length + 1}`, content: current.content.trim() });
+            }
+        };
+
+        paragraphs.forEach(p => {
+            const lowered = p.toLowerCase();
+            const foundKeyword = keywords.find(k => lowered.startsWith(k.toLowerCase()));
+            if (foundKeyword) {
+                pushCurrent();
+                current = { title: p.split('\n')[0], content: '' };
+            } else {
+                current.content += (current.content ? '\n\n' : '') + p;
+            }
+        });
+        pushCurrent();
+
+        if (chapters.length >= numSplits) {
+            return chapters.slice(0, numSplits);
+        }
+
+        const totalWords = countWords(text);
+        const wordsPerSplit = Math.ceil(totalWords / numSplits);
+        const result = [];
+        let currentWords = 0;
+        let currentContent = '';
+        let paragraphIndex = 0;
+
+        while (paragraphIndex < paragraphs.length) {
+            currentContent += (currentContent ? '\n\n' : '') + paragraphs[paragraphIndex];
+            currentWords += countWords(paragraphs[paragraphIndex]);
+            paragraphIndex++;
+
+            if (currentWords >= wordsPerSplit || paragraphIndex === paragraphs.length) {
+                result.push({ title: `Chương ${result.length + 1}`, content: currentContent });
+                currentContent = '';
+                currentWords = 0;
+            }
+        }
+
+        return result.slice(0, numSplits);
+    }
+
+    function copyToClipboard(text, triggerElement = null) {
+        if (!text) {
+            showPopup('Không có nội dung để sao chép.');
+            return;
+        }
+        text = text.replace(/&quot;/g, '"');
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(() => {
+                showPopup('Đã sao chép vào clipboard!');
+                if (triggerElement) {
+                    triggerElement.classList.add('copied');
+                    setTimeout(() => triggerElement.classList.remove('copied'), 700);
+                }
+            }).catch(err => {
+                console.error('Clipboard API thất bại:', err);
+                fallbackCopy(text, triggerElement);
+            });
+        } else {
+            fallbackCopy(text, triggerElement);
+        }
+    }
+
+    function fallbackCopy(text, triggerElement = null) {
+        try {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showPopup('Đã sao chép vào clipboard!');
+            if (triggerElement) {
+                triggerElement.classList.add('copied');
+                setTimeout(() => triggerElement.classList.remove('copied'), 700);
+            }
+        } catch (err) {
+            console.error('Sao chép thất bại:', err);
+            showPopup('Sao chép thất bại.');
+        }
+    }
+});
