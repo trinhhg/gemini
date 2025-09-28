@@ -1,20 +1,9 @@
-/**
- * Đếm số từ theo chuẩn Microsoft Word (chuỗi ký tự liên tục).
- * @param {string} text - Văn bản cần đếm.
- * @returns {number} Số lượng từ.
- */
 function countWords(text) {
     if (!text) return 0;
     const matches = text.match(/\S+/g);
     return matches ? matches.length : 0;
 }
 
-/**
- * Thực hiện thay thế và highlight các từ đã thay đổi.
- * @param {string} text - Văn bản gốc.
- * @param {Array<Object>} pairs - Mảng các cặp {find, replace, matchCase, wholeWord}.
- * @returns {string} Chuỗi HTML với các từ đã được highlight.
- */
 function performReplacement(text, pairs) {
     let highlightedText = text;
 
@@ -34,17 +23,9 @@ function performReplacement(text, pairs) {
         }
     });
 
-    // Chuyển đổi xuống dòng thành thẻ <p> để tự động cách dòng
     return highlightedText.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
 }
 
-/**
- * Chia văn bản thành N phần bằng nhau và tự động đánh số chương.
- * @param {string} text - Văn bản gốc.
- * @param {number} numSplits - Số phần cần chia.
- * @param {Array<string>} chapterKeywords - Danh sách từ khóa nhận diện chương.
- * @returns {Array<Object>} Mảng các chương đã chia { title, content }.
- */
 function splitChapter(text, numSplits, chapterKeywords) {
     if (!text.trim()) return [];
 
@@ -65,7 +46,6 @@ function splitChapter(text, numSplits, chapterKeywords) {
             original: firstLine
         };
     } else {
-        // Nếu không khớp, coi dòng đầu là suffix và thêm "Chương 1" vào
         remainingText = `${firstLine}\n${remainingText}`.trim();
         chapterTitleInfo.suffix = '';
     }
@@ -73,26 +53,29 @@ function splitChapter(text, numSplits, chapterKeywords) {
     const paragraphs = remainingText.split(/\n\s*\n/).filter(p => p.trim() !== '');
     const paragraphWords = paragraphs.map(p => countWords(p));
     const totalWords = paragraphWords.reduce((a, b) => a + b, 0);
-    const targetWordsPerSplit = Math.floor(totalWords / numSplits);
 
+    if (totalWords === 0 || numSplits <= 1) return [{ title: chapterTitleInfo.original, content: remainingText }];
+
+    const targetWordsPerSplit = Math.max(Math.floor(totalWords / numSplits), 50); // Tối thiểu 50 từ mỗi chương
     const resultChapters = [];
     let currentWordCount = 0;
     let startPara = 0;
 
     for (let i = 1; i <= numSplits; i++) {
         let target = i * targetWordsPerSplit;
-        if (i === numSplits) target = totalWords; // For the last split, take all remaining
+        if (i === numSplits) target = totalWords;
 
         let endPara = startPara;
         while (endPara < paragraphs.length && currentWordCount < target) {
-            currentWordCount += paragraphWords[endPara];
+            currentWordCount += paragraphWords[endPara] || 0;
             endPara++;
         }
 
         const contentParas = paragraphs.slice(startPara, endPara);
         let content = contentParas.join('\n\n');
+        if (content.trim() === '') content = ' '; // Tránh nội dung rỗng
 
-        const newTitle = `${chapterTitleInfo.base} ${chapterTitleInfo.number}.${i}${chapterTitleInfo.suffix}`;
+        const newTitle = `${chapterTitleInfo.base} ${parseInt(chapterTitleInfo.number) + i - 1}${chapterTitleInfo.suffix}`;
         resultChapters.push({ title: newTitle, content: content });
         startPara = endPara;
     }
@@ -100,11 +83,6 @@ function splitChapter(text, numSplits, chapterKeywords) {
     return resultChapters;
 }
 
-/**
- * Sao chép văn bản vào clipboard và thông báo cho người dùng.
- * @param {string} text - Văn bản cần sao chép.
- * @param {HTMLElement} button - Nút đã được nhấn.
- */
 function copyToClipboard(text, button) {
     navigator.clipboard.writeText(text).then(() => {
         const originalText = button.textContent;
