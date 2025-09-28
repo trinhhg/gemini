@@ -1109,5 +1109,4 @@ document.addEventListener('DOMContentLoaded', () => {
                 copyToClipboard(content, e.target);
             }
         });
-    }
-});
+
