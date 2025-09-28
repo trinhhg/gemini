@@ -21,13 +21,14 @@
 
 html, body {
     width: 100%;
-    height: 100%;
+    min-height: 100vh; /* Thay vì height: 100vh để cho phép cuộn */
     font-family: var(--font-family);
     background-color: var(--bg-color);
     color: var(--text-color);
     font-size: 16px;
     line-height: 1.6;
-    overflow-x: hidden; /* Ngăn thanh cuộn ngang */
+    overflow-x: hidden;
+    overflow-y: auto; /* Cho phép cuộn dọc toàn trang */
 }
 
 .app-container {
@@ -98,7 +99,7 @@ header {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-y: auto; /* Cho phép cuộn trong card nếu cần */
 }
 
 .tab-content {
@@ -412,6 +413,8 @@ textarea {
     background-color: #fdfdfd;
     word-break: break-word;
     white-space: pre-wrap;
+    min-height: 200px; /* Đảm bảo chiều cao tối thiểu */
+    max-height: 300px; /* Giới hạn chiều cao để cuộn */
 }
 
 .output-area p {
@@ -457,19 +460,23 @@ textarea {
     color: white;
 }
 
+#split {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Đảm bảo card con cuộn */
+}
+
 #split-input {
     min-height: 150px;
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* Khoảng cách với output */
 }
 
 #split-output-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 cột cho 2 ô output */
     gap: 15px;
-    overflow-y: auto;
     flex-grow: 1;
-    align-content: flex-start;
-    padding-top: 10px;
+    overflow-y: auto; /* Cuộn nếu nội dung dài */
 }
 
 .split-result-box {
@@ -480,21 +487,16 @@ textarea {
     flex-direction: column;
     gap: 10px;
     background-color: #fdfdfd;
-    overflow: hidden;
-    flex: 1 1 200px; /* Linh hoạt cho bố cục */
-}
-
-.split-result-box .content-wrapper {
-    flex-grow: 1;
-    max-height: 200px;
-    overflow-y: auto;
-    padding-right: 5px;
+    overflow-y: auto; /* Cuộn nội dung nếu quá dài */
+    min-height: 200px; /* Đảm bảo chiều cao tối thiểu */
+    max-height: 300px; /* Giới hạn chiều cao để cuộn */
 }
 
 .split-result-box .content {
     white-space: pre-wrap;
     word-break: break-word;
     margin: 0;
+    flex-grow: 1; /* Điền đầy không gian */
 }
 
 .split-result-box h4 {
@@ -600,7 +602,7 @@ textarea {
         grid-template-columns: 1fr;
     }
 
-    .split-result-box .content-wrapper {
+    .split-result-box .content {
         max-height: 150px;
     }
 }
