@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trịnh Hương - Công Cụ Xử Lý Văn Bản</title>
+    <title>Trịnh Hg - Công Cụ Xử Lý Văn Bản</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,6 +37,7 @@
                     <button id="import-settings-btn" class="btn">Nhập cài đặt</button>
                     <input type="file" id="import-file-input" style="display: none;" accept=".json">
                     <button id="export-settings-btn" class="btn">Xuất cài đặt</button>
+                    <button id="chapter-settings-btn" class="btn">Cài đặt chia chương</button>
                 </div>
                 
                 <div class="settings-actions">
@@ -45,10 +46,9 @@
                 </div>
                 
                 <div id="replace-pairs-container" class="replace-pairs-container">
-                    </div>
+                </div>
                 
-                <hr>
-                <div class="chapter-settings-card">
+                <div id="chapter-settings-card" class="chapter-settings-card" style="display: none;">
                     <h3>Cài đặt nhận diện chương</h3>
                     <p class="hint">Tính năng dùng cho tab "Chia Chương".</p>
                     <div class="chapter-keywords">
@@ -56,7 +56,7 @@
                         <button id="add-keyword-btn" class="btn">Thêm</button>
                     </div>
                     <div id="chapter-keywords-list" class="chapter-keywords-list">
-                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -81,121 +81,13 @@
 
             <div id="split" class="tab-content">
                 <div class="split-controls">
-                    </div>
+                </div>
                 <textarea id="split-input" placeholder="Nhập văn bản có tên chương ở dòng đầu tiên..."></textarea>
                 <div class="toolbar text-center">
                     <span id="split-input-word-count" class="word-count-display">Số từ: 0</span>
                 </div>
                 <div id="split-output-container">
-                    </div>
-            </div>
-        </main>
-    </div>
-
-    <script src="utils.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>
-                        <button id="import-settings-btn" class="btn">Nhập cài đặt</button>
-                        <input type="file" id="import-file-input" style="display: none;" accept=".json">
-                        <button id="export-settings-btn" class="btn">Xuất cài đặt</button>
-                    </div>
-                    <div class="control-group">
-                        <button id="add-pair-btn" class="btn btn-primary">Thêm cặp</button>
-                        <button id="save-settings-btn" class="btn btn-success">Lưu cài đặt</button>
-                    </div>
                 </div>
-                <div id="replace-pairs-container"></div>
-                <hr>
-                <h3>Tùy chỉnh từ khóa nhận diện chương</h3>
-                <div class="chapter-keywords">
-                    <input type="text" id="chapter-keyword-input" placeholder="Thêm từ khóa mới (vd: Hồi)">
-                    <button id="add-keyword-btn" class="btn">Thêm</button>
-                </div>
-                <div id="chapter-keywords-list"></div>
-            </div>
-
-            <div id="replace" class="tab-content">
-                <div class="replace-grid">
-                    <div class="replace-column">
-                        <textarea id="replace-input" placeholder="Nhập văn bản gốc vào đây..."></textarea>
-                        <div class="word-count-wrapper"><span id="input-word-count">Số từ: 0</span></div>
-                        <button id="replace-btn" class="btn btn-primary">Thay thế</button>
-                    </div>
-                    <div class="replace-column">
-                        <div id="replace-output" class="output-area"></div>
-                        <div class="word-count-wrapper"><span id="output-word-count">Số từ: 0</span></div>
-                        <button id="copy-output-btn" class="btn">Sao chép</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="split" class="tab-content">
-                <div class="split-controls">
-                    <span>Chia thành:</span>
-                </div>
-                <div class="split-input-wrapper">
-                    <textarea id="split-input" placeholder="Nhập văn bản có tên chương ở dòng đầu tiên..."></textarea>
-                    <div class="word-count-wrapper"><span id="split-input-word-count">Số từ: 0</span></div>
-                </div>
-                <div id="split-output-container"></div>
-            </div>
-        </main>
-    </div>
-
-    <script src="utils.js"></script>
-    <script src="script.js"></script>
-</body>
-</html>                        <input type="file" id="import-file-input" style="display: none;" accept=".json">
-                        <button id="export-settings-btn" class="btn">Xuất cài đặt</button>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="match-case-checkbox">
-                            <span class="slider"></span>
-                            Match Case
-                        </label>
-                    </div>
-                </div>
-                <div class="settings-actions">
-                    <button id="add-pair-btn" class="btn btn-primary">Thêm cặp thay thế</button>
-                    <button id="save-settings-btn" class="btn btn-success">Lưu cài đặt</button>
-                </div>
-                <div id="replace-pairs-container">
-                    </div>
-                 <hr>
-                <h3>Tùy chỉnh từ khóa nhận diện chương</h3>
-                <div class="chapter-keywords">
-                    <input type="text" id="chapter-keyword-input" placeholder="Thêm từ khóa mới (vd: Hồi)">
-                    <button id="add-keyword-btn" class="btn">Thêm</button>
-                </div>
-                <div id="chapter-keywords-list">
-                    </div>
-            </div>
-
-            <div id="replace" class="tab-content">
-                <div class="replace-grid">
-                    <div class="replace-column">
-                        <textarea id="replace-input" placeholder="Nhập văn bản gốc vào đây..."></textarea>
-                        <div class="toolbar">
-                            <span id="word-count">Số từ: 0</span>
-                            <button id="replace-btn" class="btn btn-primary">Thay thế</button>
-                        </div>
-                    </div>
-                    <div class="replace-column">
-                        <div id="replace-output" class="output-area" contenteditable="true"></div>
-                        <div class="toolbar">
-                            <button id="copy-output-btn" class="btn">Sao chép</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="split" class="tab-content">
-                <div class="split-controls">
-                    <span>Chia thành:</span>
-                    </div>
-                <textarea id="split-input" placeholder="Nhập văn bản có tên chương ở dòng đầu tiên..."></textarea>
-                <div id="split-output-container">
-                    </div>
             </div>
         </main>
     </div>
