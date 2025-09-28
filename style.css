@@ -3,7 +3,7 @@
     --primary-hover-color: #3399ff;
     --success-color: #107c10;
     --danger-color: #d13438;
-    --bg-color: #f0f2f5;
+    --bg-color: #f4f4f4;
     --card-bg-color: #ffffff;
     --text-color: #333333;
     --border-color: #e6e6e6;
@@ -17,18 +17,18 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: var(--font-family);
 }
 
 html, body {
     width: 100%;
-    min-height: 100vh; /* Thay vì height: 100vh để cho phép cuộn */
-    font-family: var(--font-family);
+    min-height: 100vh;
     background-color: var(--bg-color);
     color: var(--text-color);
     font-size: 16px;
     line-height: 1.6;
     overflow-x: hidden;
-    overflow-y: auto; /* Cho phép cuộn dọc toàn trang */
+    overflow-y: auto;
 }
 
 .app-container {
@@ -36,7 +36,7 @@ html, body {
     flex-direction: column;
     width: 100%;
     height: 100vh;
-    padding: 10px;
+    padding: 20px;
     align-items: center;
 }
 
@@ -65,26 +65,29 @@ header {
     display: flex;
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto 10px auto;
+    margin: 0 auto 20px auto;
     border-bottom: 1px solid var(--border-color);
 }
 
 .tab-link {
     flex-grow: 1;
-    padding: 10px 8px;
+    padding: 12px;
     border: none;
-    background-color: transparent;
+    background: #e0e0e0;
     cursor: pointer;
-    font-size: 1rem;
-    font-weight: 500;
-    color: #555;
-    transition: all 0.2s ease-in-out;
-    border-bottom: 3px solid transparent;
+    font-size: 16px;
+    outline: none;
+    transition: background 0.2s;
+    border-radius: 8px 8px 0 0;
 }
 
 .tab-link.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+}
+
+.tab-link:hover {
+    background: #d0d0d0;
 }
 
 .card {
@@ -92,14 +95,13 @@ header {
     max-width: 1200px;
     margin: 0 auto;
     background-color: var(--card-bg-color);
-    border-radius: 24px;
-    box-shadow: 0 8px 20px var(--shadow-color);
-    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px var(--shadow-color);
     padding: 20px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Cho phép cuộn trong card nếu cần */
+    overflow-y: auto;
 }
 
 .tab-content {
@@ -136,7 +138,7 @@ header {
 
 .btn-danger {
     background-color: var(--danger-color);
-    text-align: center; /* Căn giữa chữ Xóa */
+    text-align: center;
 }
 
 .btn-danger:hover:not(:disabled) {
@@ -159,11 +161,11 @@ input[type="text"], select, textarea {
     width: 100%;
     padding: 12px 15px;
     border: 2px solid var(--input-border-color);
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1rem;
     font-family: var(--font-family);
     transition: border-color 0.2s;
-    height: 42px; /* Cố định chiều cao input */
+    height: 42px;
 }
 
 input[type="text"]:focus, select:focus, textarea:focus {
@@ -172,15 +174,29 @@ input[type="text"]:focus, select:focus, textarea:focus {
 }
 
 textarea {
-    width: 100%;
     padding: 12px 15px;
     border: 2px solid var(--input-border-color);
-    border-radius: 8px;
+    border-radius: 12px;
     font-size: 1rem;
     font-family: var(--font-family);
-    resize: none; /* Ngăn resize */
-    height: 300px; /* Cố định chiều cao */
-    overflow-y: auto; /* Thanh cuộn dọc */
+    resize: vertical;
+    height: 200px; /* Tăng chiều cao mặc định */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+}
+
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 /* --- Tab 1: Settings --- */
@@ -255,16 +271,16 @@ textarea {
 
 .toggle-switch .slider {
     position: relative;
-    width: 50px; /* To tròn hơn */
-    height: 25px; /* To tròn hơn */
+    width: 50px;
+    height: 25px;
     background-color: #ccc;
-    border-radius: 25px; /* Tròn hơn */
+    border-radius: 25px;
     transition: background-color 0.2s;
 }
 
 .toggle-switch .slider:before {
     position: absolute;
-    content: "M"; /* Ký hiệu M cho Match Case */
+    content: "M";
     height: 21px;
     width: 21px;
     left: 2px;
@@ -284,19 +300,19 @@ textarea {
 }
 
 .toggle-switch input:checked + .slider {
-    background-color: var(--primary-color); /* Xanh dương cho Match */
+    background-color: var(--primary-color);
 }
 
 .toggle-switch:nth-child(2) .slider:before {
-    content: "F"; /* Ký hiệu F cho Find Whole Word Only */
+    content: "F";
 }
 
 .toggle-switch:nth-child(2) input:checked + .slider {
-    background-color: var(--success-color); /* Xanh lá cho Find Whole Word Only */
+    background-color: var(--success-color);
 }
 
 .toggle-switch label {
-    display: none; /* Xóa chữ label */
+    display: none;
 }
 
 .delete-pair-btn {
@@ -407,14 +423,14 @@ textarea {
 .output-area {
     flex-grow: 1;
     border: 2px solid var(--input-border-color);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 12px 15px;
     overflow-y: auto;
-    background-color: #fdfdfd;
+    background-color: #f8f9fa;
     word-break: break-word;
     white-space: pre-wrap;
-    min-height: 200px; /* Đảm bảo chiều cao tối thiểu */
-    max-height: 300px; /* Giới hạn chiều cao để cuộn */
+    min-height: 200px;
+    max-height: 300px;
 }
 
 .output-area p {
@@ -443,32 +459,31 @@ textarea {
 
 .split-controls .btn {
     min-width: 80px;
-    border-radius: 8px;
-    background-color: #ccc;
-    color: var(--text-color);
-    border: 1px solid #ccc;
+    border-radius: 12px;
+    background-color: #6c757d;
+    color: white;
+    border: 1px solid #6c757d;
 }
 
 .split-controls .btn:hover {
-    background-color: #bbb;
-    border-color: #bbb;
+    background-color: #5a6268;
+    border-color: #5a6268;
 }
 
 .split-controls .btn.active {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-    color: white;
 }
 
 #split {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Đảm bảo card con cuộn */
+    height: 100%;
 }
 
 #split-input {
-    min-height: 150px;
-    margin-bottom: 15px; /* Khoảng cách với output */
+    min-height: 250px; /* Tăng chiều cao ô input */
+    margin-bottom: 15px;
 }
 
 #split-output-container {
@@ -476,7 +491,7 @@ textarea {
     grid-template-columns: 1fr 1fr; /* 2 cột cho 2 ô output */
     gap: 15px;
     flex-grow: 1;
-    overflow-y: auto; /* Cuộn nếu nội dung dài */
+    overflow-y: auto;
 }
 
 .split-result-box {
@@ -486,17 +501,17 @@ textarea {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background-color: #fdfdfd;
-    overflow-y: auto; /* Cuộn nội dung nếu quá dài */
-    min-height: 200px; /* Đảm bảo chiều cao tối thiểu */
-    max-height: 300px; /* Giới hạn chiều cao để cuộn */
+    background-color: #f8f9fa;
+    overflow-y: auto;
+    min-height: 250px; /* Tăng chiều cao ô output */
+    max-height: 350px; /* Giới hạn chiều cao để cuộn */
 }
 
 .split-result-box .content {
     white-space: pre-wrap;
     word-break: break-word;
     margin: 0;
-    flex-grow: 1; /* Điền đầy không gian */
+    flex-grow: 1;
 }
 
 .split-result-box h4 {
@@ -602,8 +617,9 @@ textarea {
         grid-template-columns: 1fr;
     }
 
-    .split-result-box .content {
-        max-height: 150px;
+    #split-input, .split-result-box {
+        min-height: 200px; /* Giảm chiều cao trên mobile */
+        max-height: 300px;
     }
 }
 
@@ -615,14 +631,19 @@ textarea {
     background-color: var(--success-color);
     color: white;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     display: none;
-    animation: fadeIn 0.3s;
+    animation: slideIn 0.3s ease-in-out, fadeOut 0.3s ease-in-out 2.7s forwards;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
 }
