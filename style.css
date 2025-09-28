@@ -36,7 +36,7 @@ html, body {
     width: 100%;
     height: 100%;
     padding: 20px;
-    overflow-y: hidden; /* Fix scrollbar dư thừa */
+    overflow-y: auto; /* Cho phép scroll thoải mái */
     align-items: center;
 }
 
@@ -99,14 +99,14 @@ header {
     display: flex;
     flex-direction: column;
     min-height: 60vh;
-    overflow: hidden; /* Fix scrollbar dư thừa trong card */
+    overflow: hidden;
 }
 
 .tab-content {
     display: none;
     flex-direction: column;
     height: 100%;
-    overflow-y: auto; /* Cho phép cuộn nếu cần trong tab-content */
+    overflow-y: auto;
 }
 
 .tab-content.active {
@@ -172,13 +172,15 @@ input[type="text"]:focus, select:focus, textarea:focus {
 
 textarea {
     min-height: 150px;
-    flex-grow: 1;
+    max-height: 150px; /* Cố định chiều cao, không dài ra */
+    flex-grow: 0;
     overflow-y: auto;
     resize: none;
 }
 
 #replace-input, #replace-output {
     min-height: 250px;
+    max-height: 250px; /* Cố định chiều cao */
 }
 
 /* --- Tab 1: Settings --- */
@@ -402,6 +404,7 @@ textarea {
 
 #split-input {
     min-height: 150px;
+    max-height: 150px;
     margin-bottom: 10px;
 }
 
@@ -424,6 +427,7 @@ textarea {
     gap: 10px;
     background-color: #fdfdfd;
     overflow: hidden;
+    flex: 1 1 200px; /* Linh hoạt cho bố cục */
 }
 
 .split-result-box .content-wrapper {
