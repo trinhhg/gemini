@@ -1,10 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     // ====================== DOM ELEMENTS ======================
-    // Tabs
     const tabs = document.querySelectorAll('.tab-link');
     const tabContents = document.querySelectorAll('.tab-content');
 
-    // Settings Tab
     const modeSelect = document.getElementById('mode-select');
     const addModeBtn = document.getElementById('add-mode-btn');
     const copyModeBtn = document.getElementById('copy-mode-btn');
@@ -22,15 +20,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const addKeywordBtn = document.getElementById('add-keyword-btn');
     const keywordsListContainer = document.getElementById('chapter-keywords-list');
 
-    // Replace Tab
     const replaceInput = document.getElementById('replace-input');
     const replaceWordCountDisplay = document.getElementById('replace-word-count');
     const replaceBtn = document.getElementById('replace-btn');
+    const replaceOriginal = document.getElementById('replace-original');
     const replaceOutput = document.getElementById('replace-output');
     const outputWordCountDisplay = document.getElementById('output-word-count');
     const copyOutputBtn = document.getElementById('copy-output-btn');
 
-    // Split Tab
     const splitControls = document.querySelector('.split-controls');
     const splitInput = document.getElementById('split-input');
     const splitInputWordCountDisplay = document.getElementById('split-input-word-count');
@@ -71,9 +68,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 tab.classList.add('active');
             }
         });
-        // Cập nhật Word Count khi chuyển tab
         if (targetTabId === 'replace') {
             replaceWordCountDisplay.textContent = `Số từ: ${countWords(replaceInput.value)}`;
+            replaceOriginal.innerHTML = `<p>${replaceInput.value.replace(/\n/g, '<br>')}</p>`;
             outputWordCountDisplay.textContent = `Số từ: ${countWords(replaceOutput.innerText)}`;
         } else if (targetTabId === 'split') {
             splitInputWordCountDisplay.textContent = `Số từ: ${countWords(splitInput.value)}`;
@@ -130,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function createSplitButtons() {
-        splitControls.innerHTML = ''; // Xóa nút cũ
+        splitControls.innerHTML = '';
         for (let i = 2; i <= 10; i++) {
             const button = document.createElement('button');
             button.className = 'btn split-btn';
@@ -348,10 +345,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const inputText = replaceInput.value;
         if (!mode || !inputText) return;
 
+        replaceOriginal.innerHTML = `<p>${inputText.replace(/\n/g, '<br>')}</p>`;
         const resultHTML = performReplacement(inputText, mode.pairs);
         replaceOutput.innerHTML = resultHTML;
         outputWordCountDisplay.textContent = `Số từ: ${countWords(replaceOutput.innerText)}`;
-        replaceInput.value = '';
+        replaceInput.value = ''; // Xóa văn bản gốc sau khi thay thế
         replaceWordCountDisplay.textContent = 'Số từ: 0';
     }
 
@@ -375,7 +373,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function setupEventListeners() {
         tabs.forEach(tab => tab.addEventListener('click', handleTabClick));
 
-        // Settings Tab
         modeSelect.addEventListener('change', handleModeChange);
         addModeBtn.addEventListener('click', handleAddMode);
         copyModeBtn.addEventListener('click', handleCopyMode);
@@ -409,7 +406,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Replace Tab
         replaceInput.addEventListener('input', () => {
             replaceWordCountDisplay.textContent = `Số từ: ${countWords(replaceInput.value)}`;
         });
@@ -418,14 +414,13 @@ document.addEventListener("DOMContentLoaded", () => {
             copyToClipboard(replaceOutput.innerText, e.target);
         });
 
-        // Split Tab
         splitInput.addEventListener('input', () => {
             splitInputWordCountDisplay.textContent = `Số từ: ${countWords(splitInput.value)}`;
         });
         splitControls.addEventListener('click', handleSplit);
         splitOutputContainer.addEventListener('click', (e) => {
             if (e.target.classList.contains('copy-split-btn')) {
-                const index = parseInt(e.target.dataset.chapterIndex, 10);
+                const index = e.target.dataset.chapterIndex ? parseInt(e.target.dataset.chapterIndex, 10) : -1;
                 const box = e.target.closest('.split-result-box');
                 const content = box.querySelector('.content').innerHTML.replace(/<\/?p>/g, '\n\n').replace(/\n\n/g, '\n\n');
                 copyToClipboard(content, e.target);
