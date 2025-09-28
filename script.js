@@ -1,40 +1,333 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // --- STATE MANAGEMENT ---
-    let settings = {
-        modes: {
-            'Mặc định': { matchCase: false, wholeWord: false, pairs: [{ find: '', replace: '' }] }
-        },
-        activeMode: 'Mặc định',
-        chapterKeywords: ['Chương', 'Chapter', 'Phần', 'Hồi']
-    };
+// ====================== DOM ELEMENTS ======================
 
-    // --- DOM ELEMENTS (Thêm và điều chỉnh theo index.html mới) ---
-    const tabs = document.querySelectorAll('.tab-link');
-    const tabContents = document.querySelectorAll('.tab-content');
-    
-    // Settings Tab
-    const modeSelect = document.getElementById('mode-select');
-    const addModeBtn = document.getElementById('add-mode-btn');
-    const copyModeBtn = document.getElementById('copy-mode-btn');
-    const renameModeBtn = document.getElementById('rename-mode-btn');
-    const deleteModeBtn = document.getElementById('delete-mode-btn');
-    const importSettingsBtn = document.getElementById('import-settings-btn');
-    const importFileInput = document.getElementById('import-file-input');
-    const exportSettingsBtn = document.getElementById('export-settings-btn');
-    // Bỏ matchCaseCheckbox ở Settings chung, chuyển vào từng cặp
-    const addPairBtn = document.getElementById('add-pair-btn');
-    const saveSettingsBtn = document.getElementById('save-settings-btn');
-    const pairsContainer = document.getElementById('replace-pairs-container');
-    const chapterKeywordInput = document.getElementById('chapter-keyword-input');
-    const addKeywordBtn = document.getElementById('add-keyword-btn');
-    const keywordsListContainer = document.getElementById('chapter-keywords-list');
+// Tabs
+const tabs = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
 
+// Settings tab
+const modeSelect = document.getElementById('mode-select');
+const addModeBtn = document.getElementById('add-mode-btn');
+const copyModeBtn = document.getElementById('copy-mode-btn');
+const renameModeBtn = document.getElementById('rename-mode-btn');
+const deleteModeBtn = document.getElementById('delete-mode-btn');
+const importBtn = document.getElementById('import-btn');
+const exportBtn = document.getElementById('export-btn');
+const addPairBtn = document.getElementById('add-pair-btn');
+const saveSettingsBtn = document.getElementById('save-settings-btn');
+const pairList = document.getElementById('pair-list');
 
-    // Replace Tab
-    const replaceInput = document.getElementById('replace-input');
-    const replaceWordCountDisplay = document.getElementById('replace-word-count'); // Đã đổi ID
-    const replaceBtn = document.getElementById('replace-btn');
-    const replaceOutput = document.getElementById('replace-output');
+// Replace tab
+const replaceInput = document.getElementById('replace-input');
+const replaceBtn = document.getElementById('replace-btn');
+const replaceOutput = document.getElementById('replace-output');
+const copyOutputBtn = document.getElementById('copy-output-btn');
+const replaceWordCountDisplay = document.getElementById('replace-word-count');
+const outputWordCountDisplay = document.getElementById('output-word-count');
+
+// Split tab
+const splitControls = document.getElementById('split-controls');
+const splitInput = document.getElementById('split-input');
+const splitOutputContainer = document.getElementById('split-output-container');
+
+// ====================== STATE ======================
+let settings = {
+  modes: {},
+  activeMode: null,
+};
+
+// ====================== HELPERS ======================
+function saveToLocalStorage() {
+  localStorage.setItem('appSettings', JSON.stringify(settings));
+}
+
+function loadFromLocalStorage() {
+  const data = localStorage.getItem('appSettings');
+  if (data) settings = JSON.parse(data);
+}
+
+function countWords(text) {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function copyToClipboard(text, button) {
+  navigator.clipboard.writeText(text).then(() => {
+    const old = button.textContent;
+    button.textContent = 'Đã sao chép';
+    setTimeout(() => (button.textContent = old), 1500);
+  });
+}
+
+// Escape regex special chars
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// ====================== SETTINGS TAB ======================
+function updateModeDropdown() {
+  modeSelect.innerHTML = '';
+  Object.keys(settings.modes).forEach((mode) => {
+    const opt = document.createElement('option');
+    opt.value = mode;
+    opt.textContent = mode;
+    if (mode === settings.activeMode) opt.selected = true;
+    modeSelect.appendChild(opt);
+  });
+}
+
+function updateUI() {
+  pairList.innerHTML = '';
+  if (!settings.activeMode) return;
+  const mode = settings.modes[settings.activeMode];
+
+  mode.pairs.forEach((pair, index) => {
+    const el = createPairElement(pair, index);
+    pairList.appendChild(el);
+  });
+}
+
+function createPairElement(pair, index) {
+  const div = document.createElement('div');
+  div.className = 'pair-row';
+
+  const findInput = document.createElement('input');
+  findInput.value = pair.find;
+  findInput.placeholder = 'Tìm';
+  findInput.oninput = (e) => (pair.find = e.target.value);
+
+  const replaceInput = document.createElement('input');
+  replaceInput.value = pair.replace;
+  replaceInput.placeholder = 'Thay thế';
+  replaceInput.oninput = (e) => (pair.replace = e.target.value);
+
+  const matchCaseToggle = document.createElement('button');
+  matchCaseToggle.textContent = pair.matchCase ? 'MatchCase ✓' : 'MatchCase';
+  matchCaseToggle.onclick = () => {
+    pair.matchCase = !pair.matchCase;
+    matchCaseToggle.textContent = pair.matchCase ? 'MatchCase ✓' : 'MatchCase';
+  };
+
+  const wholeWordToggle = document.createElement('button');
+  wholeWordToggle.textContent = pair.wholeWord ? 'WordOnly ✓' : 'WordOnly';
+  wholeWordToggle.onclick = () => {
+    pair.wholeWord = !pair.wholeWord;
+    wholeWordToggle.textContent = pair.wholeWord ? 'WordOnly ✓' : 'WordOnly';
+  };
+
+  const delBtn = document.createElement('button');
+  delBtn.textContent = 'Xóa';
+  delBtn.onclick = () => {
+    settings.modes[settings.activeMode].pairs.splice(index, 1);
+    updateUI();
+  };
+
+  div.append(findInput, replaceInput, matchCaseToggle, wholeWordToggle, delBtn);
+  return div;
+}
+
+addModeBtn.onclick = () => {
+  const name = prompt('Tên chế độ mới:');
+  if (name && !settings.modes[name]) {
+    settings.modes[name] = { pairs: [] };
+    settings.activeMode = name;
+    updateModeDropdown();
+    updateUI();
+  }
+};
+
+copyModeBtn.onclick = () => {
+  if (!settings.activeMode) return;
+  const newName = prompt('Tên chế độ sao chép:');
+  if (newName) {
+    settings.modes[newName] = JSON.parse(
+      JSON.stringify(settings.modes[settings.activeMode])
+    );
+    settings.activeMode = newName;
+    updateModeDropdown();
+    updateUI();
+  }
+};
+
+renameModeBtn.onclick = () => {
+  if (!settings.activeMode) return;
+  const newName = prompt('Tên mới:');
+  if (newName && !settings.modes[newName]) {
+    settings.modes[newName] = settings.modes[settings.activeMode];
+    delete settings.modes[settings.activeMode];
+    settings.activeMode = newName;
+    updateModeDropdown();
+    updateUI();
+  }
+};
+
+deleteModeBtn.onclick = () => {
+  if (!settings.activeMode) return;
+  if (confirm('Xóa chế độ?')) {
+    delete settings.modes[settings.activeMode];
+    settings.activeMode = Object.keys(settings.modes)[0] || null;
+    updateModeDropdown();
+    updateUI();
+  }
+};
+
+importBtn.onclick = () => {
+  const data = prompt('Dán JSON cài đặt:');
+  if (data) {
+    try {
+      settings = JSON.parse(data);
+      updateModeDropdown();
+      updateUI();
+    } catch {
+      alert('JSON không hợp lệ');
+    }
+  }
+};
+
+exportBtn.onclick = () => {
+  prompt('Sao chép JSON:', JSON.stringify(settings));
+};
+
+addPairBtn.onclick = () => {
+  if (!settings.activeMode) return;
+  settings.modes[settings.activeMode].pairs.unshift({
+    find: '',
+    replace: '',
+    matchCase: false,
+    wholeWord: false,
+  });
+  updateUI();
+};
+
+saveSettingsBtn.onclick = saveToLocalStorage;
+
+modeSelect.onchange = (e) => {
+  settings.activeMode = e.target.value;
+  updateUI();
+};
+
+// ====================== REPLACE TAB ======================
+function performReplacement(text, pairs) {
+  let result = text;
+  pairs.forEach((pair) => {
+    if (!pair.find) return;
+    let pattern = escapeRegex(pair.find);
+    if (pair.wholeWord) pattern = `\\b${pattern}\\b`;
+    const flags = pair.matchCase ? 'g' : 'gi';
+    const regex = new RegExp(pattern, flags);
+    result = result.replace(
+      regex,
+      `<mark>${pair.replace || ''}</mark>`
+    );
+  });
+
+  // Tự động cách dòng
+  return result
+    .split(/\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+function handleReplace() {
+  const mode = settings.modes[settings.activeMode];
+  if (!mode) return;
+  const inputText = replaceInput.value;
+  if (!inputText) return;
+
+  const resultHTML = performReplacement(inputText, mode.pairs);
+  replaceOutput.innerHTML = resultHTML;
+
+  outputWordCountDisplay.textContent = `Số từ: ${countWords(
+    replaceOutput.innerText
+  )}`;
+
+  replaceInput.value = '';
+  replaceWordCountDisplay.textContent = 'Số từ: 0';
+}
+
+replaceInput.addEventListener('input', () => {
+  replaceWordCountDisplay.textContent = `Số từ: ${countWords(
+    replaceInput.value
+  )}`;
+});
+
+replaceBtn.addEventListener('click', handleReplace);
+copyOutputBtn.addEventListener('click', (e) =>
+  copyToClipboard(replaceOutput.innerText, e.target)
+);
+
+// ====================== SPLIT TAB ======================
+function splitTextIntoParts(text, n) {
+  const paragraphs = text
+    .split(/\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  const totalWords = countWords(text);
+  const target = Math.ceil(totalWords / n);
+
+  const parts = [];
+  let current = [];
+  let wordCount = 0;
+
+  paragraphs.forEach((p) => {
+    const wc = countWords(p);
+    if (wordCount + wc > target && parts.length < n - 1) {
+      parts.push(current.join('\n\n'));
+      current = [p];
+      wordCount = wc;
+    } else {
+      current.push(p);
+      wordCount += wc;
+    }
+  });
+
+  if (current.length) parts.push(current.join('\n\n'));
+  while (parts.length < n) parts.push('');
+  return parts;
+}
+
+function handleSplit(e) {
+  if (!e.target.classList.contains('split-btn')) return;
+  const n = parseInt(e.target.dataset.n);
+  const text = splitInput.value;
+  if (!text) return;
+
+  const parts = splitTextIntoParts(text, n);
+  splitOutputContainer.innerHTML = '';
+
+  parts.forEach((part, i) => {
+    const box = document.createElement('div');
+    box.className = 'split-box';
+
+    const ta = document.createElement('textarea');
+    ta.value = `Chương 1.${i + 1}\n\n${part}`;
+
+    const wc = document.createElement('div');
+    wc.className = 'word-count';
+    wc.textContent = `Số từ: ${countWords(ta.value)}`;
+
+    ta.addEventListener(
+      'input',
+      () => (wc.textContent = `Số từ: ${countWords(ta.value)}`)
+    );
+
+    const copyBtn = document.createElement('button');
+    copyBtn.textContent = `Sao chép ${i + 1}`;
+    copyBtn.onclick = (ev) => copyToClipboard(ta.value, ev.target);
+
+    box.append(ta, wc, copyBtn);
+    splitOutputContainer.appendChild(box);
+  });
+
+  splitInput.value = '';
+}
+
+splitControls.addEventListener('click', handleSplit);
+
+// ====================== INIT ======================
+loadFromLocalStorage();
+updateModeDropdown();
+updateUI();    const replaceOutput = document.getElementById('replace-output');
     const outputWordCountDisplay = document.getElementById('output-word-count'); // Mới
     const copyOutputBtn = document.getElementById('copy-output-btn');
 
