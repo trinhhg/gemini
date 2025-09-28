@@ -44,12 +44,24 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     let popupTimeout = null;
+    let currentNumSplits = 2;
 
     // ====================== INITIALIZATION ======================
     loadSettings();
     updateUI();
     setupEventListeners();
     createSplitButtons();
+
+    // Set styles for scrolling and resize
+    tabContents.forEach(content => {
+        content.style.overflow = 'visible';
+    });
+    if (elSplitOutputContainer) {
+        elSplitOutputContainer.style.overflow = 'visible';
+        elSplitOutputContainer.style.height = 'auto';
+    }
+    if (elReplaceInput) elReplaceInput.style.resize = 'none';
+    if (elSplitInput) elSplitInput.style.resize = 'none';
 
     // Auto-click default split button (Chia 2)
     const defaultSplitBtn = elSplitControls.querySelector('[data-splits="2"]');
@@ -71,9 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
         tabs.forEach(tab => {
             tab.classList.toggle('active', tab.dataset.tab === targetTabId);
         });
-        if (targetTabId === 'split' && defaultSplitBtn) {
+        if (targetTabId === 'split') {
             const activeSplitBtn = elSplitControls.querySelector('.active');
-            (activeSplitBtn || defaultSplitBtn).click();
+            (activeSplitBtn || defaultSplitBtn)?.click();
         }
     }
 
@@ -131,6 +143,12 @@ document.addEventListener("DOMContentLoaded", () => {
             button.dataset.splits = i;
             elSplitControls.appendChild(button);
         }
+        // Add Chia Chương button
+        const chiaChuongBtn = document.createElement('button');
+        chiaChuongBtn.type = 'button';
+        chiaChuongBtn.className = 'btn chia-chuong-btn';
+        chiaChuongBtn.textContent = 'Chia Chương';
+        elSplitControls.appendChild(chiaChuongBtn);
     }
 
     function renderChapterKeywords() {
@@ -146,31 +164,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function renderSplitOutput(chapters) {
+    function renderPlaceholders(num) {
         elSplitOutputContainer.innerHTML = '';
-
-        // Original box
-        const originalBox = document.createElement('div');
-        originalBox.className = 'split-result-box';
-        originalBox.innerHTML = `
-            <h4>Văn bản gốc</h4>
-            <div class="content">${escapeHtml(elSplitInput.value).split('\n\n').map(p => `<p>${p}</p>`).join('')}</div>
-            <div class="toolbar text-center">
-                <span class="word-count-display">Số từ: ${countWords(elSplitInput.value)}</span>
-            </div>
-            <button type="button" class="btn copy-split-btn full-width-btn" data-chapter-index="-1">Sao chép gốc</button>
-        `;
-        elSplitOutputContainer.appendChild(originalBox);
-
-        // Chapter boxes
-        chapters.forEach((chapter, index) => {
+        for (let i = 1; i <= num; i++) {
             const box = document.createElement('div');
             box.className = 'split-result-box';
             box.innerHTML = `
-                <h4>${escapeHtml(chapter.title || `Chương ${index + 1}`)}</h4>
-                <div class="content">${escapeHtml(chapter.content || '').split('\n\n').map(p => `<p>${p}</p>`).join('')}</div>
+                <h4>Kết quả chương ${i}</h4>
+                <div class="content">Kết quả chương ${i} sẽ xuất hiện ở đây.</div>
                 <div class="toolbar text-center">
-                    <span class="word-count-display">Số từ: ${countWords(chapter.content || '')}</span>
+                    <span class="word-count-display">Words: 0</span>
+                </div>
+                <button type="button" class="btn copy-split-btn full-width-btn" data-chapter-index="${i-1}">Sao chép ${i}</button>
+            `;
+            elSplitOutputContainer.appendChild(box);
+        }
+    }
+
+    function renderSplitOutput(chapters) {
+        elSplitOutputContainer.innerHTML = '';
+        chapters.forEach((chapter, index) => {
+            const box = document.createElement('div');
+            box.className = 'split-result-box';
+            const contentHtml = escapeHtml(chapter.content || '').split('\n\n').map(p => `<p>${p}</p>`).join('');
+            box.innerHTML = `
+                <h4>${escapeHtml(chapter.title || `Kết quả chương ${index + 1}`)}</h4>
+                <div class="content">${contentHtml}</div>
+                <div class="toolbar text-center">
+                    <span class="word-count-display">Words: ${countWords(chapter.content || '')}</span>
                 </div>
                 <button type="button" class="btn copy-split-btn full-width-btn" data-chapter-index="${index}">Sao chép ${index + 1}</button>
             `;
@@ -213,14 +234,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const saved = localStorage.getItem('textToolSettings');
             if (saved) {
                 const loadedSettings = JSON.parse(saved);
-                // Normalize modes
                 Object.keys(loadedSettings.modes).forEach(modeName => {
                     loadedSettings.modes[modeName].pairs.forEach(pair => {
                         pair.matchCase = !!pair.matchCase;
                         pair.wholeWord = !!pair.wholeWord;
                     });
                 });
-                // Validate chapterKeywords
                 if (!Array.isArray(loadedSettings.chapterKeywords) || loadedSettings.chapterKeywords.length === 0) {
                     loadedSettings.chapterKeywords = ['Chương', 'Chapter', 'Phần', 'Hồi'];
                 }
@@ -234,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showPopup(message) {
         if (!elPopup) return;
-        clearTimeout(popupTimeout); // Clear previous timeout
+        clearTimeout(popupTimeout);
         elPopup.textContent = message;
         elPopup.style.display = 'block';
         popupTimeout = setTimeout(() => {
@@ -366,21 +385,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function handleSplit(e) {
-        const target = e.target.closest('.split-btn');
+        const target = e.target.closest('.split-btn, .chia-chuong-btn');
         if (!target) return;
 
-        elSplitControls.querySelectorAll('.split-btn').forEach(btn => btn.classList.remove('active'));
-        target.classList.add('active');
-
-        const numSplits = parseInt(target.dataset.splits, 10);
-        const text = elSplitInput.value;
-        if (!text || !text.trim()) return;
-
-        const chapters = splitChapter(text, numSplits, settings.chapterKeywords);
-        renderSplitOutput(chapters);
-
-        elSplitInput.value = '';
-        elSplitInputWordCountDisplay.textContent = 'Số từ: 0';
+        if (target.classList.contains('split-btn')) {
+            elSplitControls.querySelectorAll('.split-btn').forEach(btn => btn.classList.remove('active'));
+            target.classList.add('active');
+            currentNumSplits = parseInt(target.dataset.splits, 10);
+            renderPlaceholders(currentNumSplits);
+        } else if (target.classList.contains('chia-chuong-btn')) {
+            const text = elSplitInput.value;
+            if (!text || !text.trim()) {
+                showPopup('Vui lòng nhập văn bản để chia chương.');
+                return;
+            }
+            const chapters = splitChapter(text, currentNumSplits, settings.chapterKeywords);
+            renderSplitOutput(chapters);
+            // Do not clear input as per request
+        }
     }
 
     function setupEventListeners() {
@@ -455,7 +477,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (!box) return;
                     const contentEl = box.querySelector('.content');
                     if (!contentEl) return;
-                    const raw = contentEl.innerHTML.replace(/<\/p>\s*<p>/g, '\n\n').replace(/<\/?p>|<br>/g, '\n');
+                    const raw = contentEl.innerHTML.replace(/<\/p>\s*<p>/g, '\n\n').replace(/<\/?p>|<br>/g, '\n').replace(/&quot;/g, '"'); // Fix &quot; in copy
                     copyToClipboard(raw, e.target);
                 }
             });
@@ -487,24 +509,22 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!inputText) return '';
         let result = inputText;
 
-        // Apply replacements on raw text
         pairs.forEach(pair => {
             if (!pair.find) return;
             const escapedFind = escapeRegExp(pair.find);
             const boundary = pair.wholeWord ? '(^|[^\\p{L}\\p{N}_])' : '';
-            const flags = pair.matchCase ? 'gu' : 'giu'; // u for Unicode
+            const flags = pair.matchCase ? 'gu' : 'giu';
             try {
                 const regex = new RegExp(`${boundary}${escapedFind}${boundary ? '($|[^\\p{L}\\p{N}_])' : ''}`, flags);
                 result = result.replace(regex, (match, prefix = '', suffix = '') => {
-                    return (prefix || '') + `<span class="highlight">${pair.replace}</span>` + (suffix || '');
+                    return (prefix || '') + `<span class="highlight">${escapeHtml(pair.replace)}</span>` + (suffix || '');
                 });
             } catch (err) {
                 console.error('Regex lỗi:', err);
-                result = result.split(pair.find).join(`<span class="highlight">${pair.replace}</span>`);
+                result = result.split(pair.find).join(`<span class="highlight">${escapeHtml(pair.replace)}</span>`);
             }
         });
 
-        // Escape HTML, but preserve <span class="highlight"> content
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = result;
         const walker = document.createTreeWalker(tempDiv, NodeFilter.SHOW_TEXT);
@@ -516,7 +536,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         result = tempDiv.innerHTML;
 
-        // Convert newlines to paragraphs
         return result.split(/\n\s*\n/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
     }
 
@@ -547,7 +566,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return chapters.slice(0, chapters.length);
         }
 
-        // Fallback: Split by approximate word count, preserve paragraphs
         const totalWords = countWords(text);
         const wordsPerSplit = Math.ceil(totalWords / numSplits);
         const result = [];
@@ -575,6 +593,7 @@ document.addEventListener("DOMContentLoaded", () => {
             showPopup('Không có nội dung để sao chép.');
             return;
         }
+        text = text.replace(/&quot;/g, '"'); // Ensure &quot; is converted back to " in copied text
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text).then(() => {
                 showPopup('Đã sao chép vào clipboard!');
