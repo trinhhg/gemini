@@ -28,7 +28,7 @@ html, body {
     color: var(--text-color);
     font-size: 16px;
     line-height: 1.6;
-    overflow-y: auto; /* Sử dụng thanh cuộn mặc định của trình duyệt */
+    overflow-x: hidden; /* Ngăn thanh cuộn ngang */
 }
 
 .app-container {
@@ -36,52 +36,50 @@ html, body {
     flex-direction: column;
     width: 100%;
     height: 100vh;
-    padding: 10px; /* Giảm padding để tiết kiệm không gian */
+    padding: 10px; /* Giảm padding để lấy diện tích */
     align-items: center;
 }
 
 header {
     width: 100%;
     max-width: 1200px;
-    margin-bottom: 10px; /* Thu gọn margin */
-    padding: 10px 0; /* Thu gọn padding */
-    flex-shrink: 0;
+    margin-bottom: 10px;
+    padding: 5px 0; /* Thu nhỏ header */
 }
 
 .web-name {
     text-align: center;
-    font-size: 2rem; /* Thu nhỏ font header */
+    font-size: 2.5rem; /* Thu nhỏ một chút */
     font-weight: 700;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 .license-info {
     text-align: left;
-    font-size: 0.8rem; /* Thu nhỏ font thông tin */
+    font-size: 0.8rem; /* Thu nhỏ font */
     color: #666;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .tabs {
     display: flex;
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto 10px auto; /* Thu gọn margin */
+    margin: 0 auto 10px auto;
     border-bottom: 1px solid var(--border-color);
-    flex-shrink: 0;
 }
 
 .tab-link {
     flex-grow: 1;
-    padding: 10px; /* Thu gọn padding tab */
+    padding: 10px 8px; /* Thu nhỏ padding */
     border: none;
     background-color: transparent;
     cursor: pointer;
-    font-size: 1rem; /* Thu nhỏ font tab */
+    font-size: 1rem;
     font-weight: 500;
     color: #555;
     transition: all 0.2s ease-in-out;
-    border-bottom: 2px solid transparent; /* Thu gọn border */
+    border-bottom: 3px solid transparent;
 }
 
 .tab-link.active {
@@ -94,20 +92,21 @@ header {
     max-width: 1200px;
     margin: 0 auto;
     background-color: var(--card-bg-color);
-    border-radius: 20px; /* Giảm radius nhẹ */
-    box-shadow: 0 4px 12px var(--shadow-color); /* Thu gọn shadow */
+    border-radius: 24px;
+    box-shadow: 0 8px 20px var(--shadow-color);
     border: none;
-    padding: 20px; /* Giảm padding */
-    flex: 1;
+    padding: 20px;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    min-height: 0; /* Cho phép co lại */
+    min-height: 60vh;
+    overflow: hidden; /* Ngăn thanh cuộn nội bộ */
 }
 
 .tab-content {
     display: none;
     flex-direction: column;
-    flex: 1;
+    height: 100%;
 }
 
 .tab-content.active {
@@ -116,12 +115,12 @@ header {
 
 /* --- Controls & Buttons --- */
 .btn {
-    padding: 8px 16px; /* Thu gọn padding button */
-    font-size: 0.9rem; /* Thu nhỏ font button */
+    padding: 10px 20px;
+    font-size: 1rem;
     border: none;
     background-color: var(--primary-color);
     color: white;
-    border-radius: 16px; /* Thu gọn radius */
+    border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.2s;
     font-weight: 500;
@@ -138,6 +137,8 @@ header {
 
 .btn-danger {
     background-color: var(--danger-color);
+    height: 42px; /* Cao bằng ô input */
+    line-height: 42px; /* Căn giữa dọc */
 }
 
 .btn-danger:hover:not(:disabled) {
@@ -158,12 +159,13 @@ header {
 
 input[type="text"], select, textarea {
     width: 100%;
-    padding: 10px 12px; /* Thu gọn padding */
+    padding: 12px 15px;
     border: 2px solid var(--input-border-color);
-    border-radius: 6px; /* Thu gọn radius */
-    font-size: 0.9rem; /* Thu nhỏ font */
+    border-radius: 8px;
+    font-size: 1rem;
     font-family: var(--font-family);
     transition: border-color 0.2s;
+    height: 42px; /* Cố định chiều cao input */
 }
 
 input[type="text"]:focus, select:focus, textarea:focus {
@@ -172,34 +174,27 @@ input[type="text"]:focus, select:focus, textarea:focus {
 }
 
 textarea {
-    height: auto;
     min-height: 150px;
-    max-height: 50vh; /* Cho phép resize nhưng giới hạn */
-    overflow-y: auto; /* Thanh cuộn mặc định */
-    resize: vertical; /* Tùy chỉnh chiều cao bởi người dùng */
+    flex-grow: 1;
+    overflow-y: auto;
+    resize: vertical;
 }
 
 #replace-input, #replace-output {
-    height: 40vh; /* Khởi tạo chiều cao cố định */
-    max-height: 50vh;
-}
-
-#split-input {
-    height: 30vh; /* Khởi tạo chiều cao cố định */
-    max-height: 50vh;
+    min-height: 250px;
 }
 
 /* --- Tab 1: Settings --- */
 .control-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px; /* Thu gọn gap */
+    gap: 10px;
     align-items: center;
-    margin-bottom: 10px; /* Thu gọn margin */
+    margin-bottom: 15px;
 }
 
 .mode-select-row {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .control-label {
@@ -208,63 +203,103 @@ textarea {
 
 .mode-dropdown {
     width: auto;
-    min-width: 120px; /* Thu nhỏ */
-    max-width: 200px;
+    min-width: 150px;
+    max-width: 250px;
     flex-grow: 0;
 }
 
 .settings-actions {
     display: flex;
-    gap: 8px; /* Thu gọn gap */
-    margin-bottom: 15px;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .replace-pairs-container {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Thu gọn gap */
+    gap: 15px;
     margin-top: 10px;
-    max-height: 40vh; /* Thu gọn chiều cao */
-    overflow-y: auto; /* Thanh cuộn mặc định */
-    padding-right: 5px;
+    max-height: 45vh;
+    overflow-y: auto;
+    padding-right: 10px;
 }
 
 .replace-pair {
     display: flex;
     align-items: center;
-    gap: 5px; /* Thu gọn gap */
+    gap: 10px;
     padding: 5px 0;
     border-bottom: 1px dashed #f0f0f0;
 }
 
 .replace-pair input {
     flex-grow: 1;
+    height: 42px; /* Cao cố định */
 }
 
 .pair-checkboxes {
     display: flex;
-    gap: 10px; /* Thu gọn gap */
-    min-width: 200px; /* Thu nhỏ */
+    gap: 15px;
+    min-width: 250px;
 }
 
 .checkbox-group {
-    display: flex;
+    position: relative;
+    display: inline-flex;
     align-items: center;
-    gap: 3px; /* Thu gọn gap */
-    white-space: nowrap;
+    cursor: pointer;
+}
+
+.checkbox-group input {
+    display: none;
+}
+
+.checkbox-group .slider {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 10px;
+    transition: background-color 0.2s;
+}
+
+.checkbox-group .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.checkbox-group input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+.checkbox-group input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+.checkbox-group label {
+    margin-left: 5px;
+    font-size: 0.9rem;
 }
 
 .delete-pair-btn {
-    padding: 4px 8px; /* Thu gọn padding */
-    font-size: 0.8rem; /* Thu nhỏ font */
+    padding: 5px 10px;
+    font-size: 0.9rem;
     font-weight: 500;
     border: 1px solid var(--danger-color);
     background-color: var(--danger-color);
     color: white;
-    border-radius: 6px; /* Thu gọn radius */
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.2s;
-    min-width: 50px; /* Thu nhỏ */
+    min-width: 60px;
+    height: 42px; /* Cao bằng ô input */
 }
 
 .delete-pair-btn:hover {
@@ -274,21 +309,21 @@ textarea {
 
 #chapter-settings-card {
     border: 1px solid #ddd;
-    border-radius: 10px; /* Thu gọn radius */
-    padding: 15px; /* Thu gọn padding */
-    margin-top: 15px;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
     background-color: #fafafa;
 }
 
 .chapter-settings-card .hint {
-    font-size: 0.8rem; /* Thu nhỏ font */
+    font-size: 0.9rem;
     color: #666;
-    margin-bottom: 8px; /* Thu gọn margin */
+    margin-bottom: 10px;
 }
 
 .chapter-keywords {
     display: flex;
-    gap: 8px; /* Thu gọn gap */
+    gap: 10px;
     margin-top: 10px;
 }
 
@@ -299,17 +334,17 @@ textarea {
 .chapter-keywords-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px; /* Thu gọn gap */
+    gap: 10px;
     margin-top: 10px;
 }
 
 .keyword-tag {
     background-color: #eef;
-    padding: 4px 10px; /* Thu gọn padding */
-    border-radius: 12px; /* Thu gọn radius */
+    padding: 5px 12px;
+    border-radius: 15px;
     display: flex;
     align-items: center;
-    gap: 6px; /* Thu gọn gap */
+    gap: 8px;
 }
 
 .delete-keyword-btn {
@@ -318,7 +353,7 @@ textarea {
     cursor: pointer;
     color: var(--danger-color);
     font-weight: bold;
-    font-size: 0.9rem; /* Thu nhỏ font */
+    font-size: 1rem;
     padding: 0;
 }
 
@@ -326,7 +361,7 @@ textarea {
 .replace-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px; /* Thu gọn gap */
+    gap: 20px;
     height: 100%;
     flex-grow: 1;
 }
@@ -334,7 +369,7 @@ textarea {
 .replace-column {
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Thu gọn gap */
+    gap: 10px;
 }
 
 .toolbar {
@@ -352,16 +387,19 @@ textarea {
     font-weight: 500;
     color: #555;
     background-color: #eee;
-    padding: 4px 8px; /* Thu gọn padding */
-    border-radius: 4px; /* Thu gọn radius */
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 .output-area {
+    flex-grow: 1;
     border: 2px solid var(--input-border-color);
-    border-radius: 6px; /* Thu gọn radius */
-    padding: 10px 12px; /* Thu gọn padding */
+    border-radius: 8px;
+    padding: 12px 15px;
+    overflow-y: auto;
     background-color: #fdfdfd;
-    overflow-y: auto; /* Thanh cuộn mặc định */
+    word-break: break-word; /* Ngăn thanh cuộn ngang */
+    white-space: pre-wrap;
 }
 
 .output-area p {
@@ -383,14 +421,14 @@ textarea {
 .split-controls {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px; /* Thu gọn gap */
+    gap: 10px;
     align-items: center;
-    margin-bottom: 10px; /* Thu gọn margin */
+    margin-bottom: 15px;
 }
 
 .split-controls .btn {
-    min-width: 70px; /* Thu nhỏ */
-    border-radius: 6px; /* Thu gọn radius */
+    min-width: 80px;
+    border-radius: 8px;
     background-color: #ccc;
     color: var(--text-color);
     border: 1px solid #ccc;
@@ -409,33 +447,33 @@ textarea {
 
 #split-input {
     min-height: 150px;
-    max-height: 50vh; /* Cho phép resize nhưng giới hạn */
     margin-bottom: 10px;
 }
 
 #split-output-container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: 15px;
-    align-content: flex-start;
+    flex-grow: 1;
     padding-top: 10px;
+    word-break: break-word; /* Ngăn thanh cuộn ngang */
+    white-space: pre-wrap;
 }
 
 .split-result-box {
     border: 2px solid var(--input-border-color);
-    border-radius: 10px; /* Thu gọn radius */
-    padding: 12px; /* Thu gọn padding */
+    border-radius: 12px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Thu gọn gap */
+    gap: 10px;
     background-color: #fdfdfd;
-    overflow-y: auto; /* Thanh cuộn mặc định */
-    flex: 1 1 200px;
+    overflow: hidden;
 }
 
 .split-result-box .content-wrapper {
     flex-grow: 1;
     max-height: 200px;
+    overflow-y: auto;
     padding-right: 5px;
 }
 
@@ -455,21 +493,15 @@ textarea {
 
 /* Layout chia chương (Chia N) */
 .split-layout-2 {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    grid-template-columns: repeat(3, 1fr); /* Ô gốc + 2 kết quả */
 }
 
 .split-layout-3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .split-layout-4 {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
+    grid-template-columns: repeat(5, 1fr);
 }
 
 .split-layout-5,
@@ -478,14 +510,7 @@ textarea {
 .split-layout-8,
 .split-layout-9,
 .split-layout-10 {
-    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.split-result-box {
-    flex: 1 1 auto;
-    min-width: 200px;
 }
 
 /* --- Responsive --- */
@@ -505,11 +530,11 @@ textarea {
 
 @media (max-width: 768px) {
     .app-container {
-        padding: 5px; /* Giảm padding thêm trên mobile */
+        padding: 10px;
     }
 
     .web-name {
-        font-size: 1.5rem; /* Thu nhỏ thêm trên mobile */
+        font-size: 2rem;
     }
 
     .mode-management-row,
@@ -537,7 +562,7 @@ textarea {
     }
 
     .card {
-        padding: 10px; /* Giảm padding trên mobile */
+        padding: 15px;
     }
 
     .split-layout-2,
@@ -554,9 +579,5 @@ textarea {
 
     .split-result-box .content-wrapper {
         max-height: 150px;
-    }
-
-    textarea {
-        max-height: 40vh; /* Giới hạn trên mobile */
     }
 }
