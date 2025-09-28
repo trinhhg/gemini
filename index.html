@@ -41,12 +41,11 @@
                 </div>
                 
                 <div class="settings-actions">
-                    <button id="add-pair-btn" class="btn btn-primary">Thêm cặp</button>
+                    <button id="add-pair-btn" class="btn">Thêm cặp</button> <!-- Đã thêm class btn -->
                     <button id="save-settings-btn" class="btn btn-success">Lưu cài đặt</button>
                 </div>
                 
-                <div id="replace-pairs-container" class="replace-pairs-container">
-                </div>
+                <div id="replace-pairs-container" class="replace-pairs-container"></div>
                 
                 <div id="chapter-settings-card" class="chapter-settings-card" style="display: none;">
                     <h3>Cài đặt nhận diện chương</h3>
@@ -55,8 +54,7 @@
                         <input type="text" id="chapter-keyword-input" placeholder="Thêm từ khóa mới (vd: Hồi, Phần)">
                         <button id="add-keyword-btn" class="btn">Thêm</button>
                     </div>
-                    <div id="chapter-keywords-list" class="chapter-keywords-list">
-                    </div>
+                    <div id="chapter-keywords-list" class="chapter-keywords-list"></div>
                 </div>
             </div>
 
@@ -67,7 +65,7 @@
                         <div class="toolbar text-center">
                             <span id="replace-word-count" class="word-count-display">Số từ: 0</span>
                         </div>
-                        <button id="replace-btn" class="btn btn-primary full-width-btn">Thay thế</button>
+                        <button id="replace-btn" class="btn full-width-btn">Thay thế</button>
                     </div>
                     <div class="replace-column">
                         <div id="replace-output" class="output-area" contenteditable="false"></div>
@@ -80,19 +78,17 @@
             </div>
 
             <div id="split" class="tab-content">
-                <div class="split-controls">
-                </div>
+                <div class="split-controls"></div>
                 <textarea id="split-input" placeholder="Nhập văn bản có tên chương ở dòng đầu tiên..."></textarea>
                 <div class="toolbar text-center">
                     <span id="split-input-word-count" class="word-count-display">Số từ: 0</span>
                 </div>
-                <div id="split-output-container">
-                </div>
+                <div id="split-output-container"></div>
             </div>
         </main>
     </div>
 
-    <div id="popup" class="popup"></div> <!-- Thêm popup cho thông báo -->
+    <div id="popup" class="popup"></div> <!-- Popup cho thông báo -->
 
     <script src="utils.js"></script>
     <script src="script.js"></script>
