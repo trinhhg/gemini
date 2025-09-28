@@ -781,7 +781,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});    const replaceOutput = document.getElementById('replace-output');
+);    const replaceOutput = document.getElementById('replace-output');
     const copyOutputBtn = document.getElementById('copy-output-btn');
 
     // Split Tab
