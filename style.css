@@ -34,9 +34,9 @@ html, body {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     padding: 20px;
-    overflow-y: auto; /* Cho phép scroll thoải mái */
+    overflow-y: auto;
     align-items: center;
 }
 
@@ -44,6 +44,7 @@ header {
     width: 100%;
     max-width: 1200px;
     margin-bottom: 20px;
+    flex-shrink: 0;
 }
 
 .web-name {
@@ -66,6 +67,7 @@ header {
     max-width: 1200px;
     margin: 0 auto 20px auto;
     border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
 }
 
 .tab-link {
@@ -95,17 +97,17 @@ header {
     box-shadow: 0 8px 20px var(--shadow-color);
     border: none;
     padding: 30px;
-    flex-grow: 1;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: 60vh;
-    overflow: hidden;
+    overflow-y: auto;
+    min-height: 0;
 }
 
 .tab-content {
     display: none;
     flex-direction: column;
-    height: 100%;
+    flex: 1;
     overflow-y: auto;
 }
 
@@ -171,16 +173,16 @@ input[type="text"]:focus, select:focus, textarea:focus {
 }
 
 textarea {
+    height: auto;
     min-height: 150px;
-    max-height: 150px; /* Cố định chiều cao, không dài ra */
-    flex-grow: 0;
+    max-height: 40vh;
     overflow-y: auto;
-    resize: none;
+    resize: vertical;
 }
 
 #replace-input, #replace-output {
-    min-height: 250px;
-    max-height: 250px; /* Cố định chiều cao */
+    height: 40vh;
+    max-height: 40vh;
 }
 
 /* --- Tab 1: Settings --- */
