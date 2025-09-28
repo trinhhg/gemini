@@ -76,13 +76,13 @@ function splitChapter(text, numSplits, chapterKeywords) {
     const targetWordsPerSplit = Math.floor(totalWords / numSplits);
 
     if (paragraphs.length < numSplits) {
-        // Fallback: Split by single lines if not enough paragraphs
+        // Fallback: Split by single lines and group by sentences
         const fallbackLines = remainingText.split('\n').filter(l => l.trim() !== '');
         paragraphs = [];
         let currentPara = [];
         fallbackLines.forEach(line => {
             currentPara.push(line);
-            if (line.match(/[.!?]$/)) { // End of sentence
+            if (line.match(/[.!?]$/)) {
                 paragraphs.push(currentPara.join(' '));
                 currentPara = [];
             }
