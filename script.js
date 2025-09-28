@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const activeSplitBtn = splitControls.querySelector('.active');
             if (activeSplitBtn) {
                 activeSplitBtn.click();
-            } else {
+            } else if (defaultSplitBtn) {
                 defaultSplitBtn.click();
             }
         }
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function createSplitButtons() {
-        splitControls.innerHTML = ''; // Xóa nút cũ
+        splitControls.innerHTML = '';
         for (let i = 2; i <= 10; i++) {
             const button = document.createElement('button');
             button.className = 'btn split-btn';
@@ -244,6 +244,18 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
             popup.style.display = 'none';
         }, 3000);
+    }
+
+    function toggleChapterSettings() {
+        if (chapterSettingsCard.style.display === 'none') {
+            pairsContainer.style.display = 'none';
+            chapterSettingsCard.style.display = 'block';
+            addPairBtn.style.display = 'none';
+        } else {
+            pairsContainer.style.display = 'flex';
+            chapterSettingsCard.style.display = 'none';
+            addPairBtn.style.display = 'inline-block';
+        }
     }
 
     // ====================== EVENT HANDLERS ======================
@@ -382,7 +394,7 @@ document.addEventListener("DOMContentLoaded", () => {
         exportSettingsBtn.addEventListener('click', handleExportSettings);
         importSettingsBtn.addEventListener('click', () => importFileInput.click());
         importFileInput.addEventListener('change', handleImportSettings);
-        chapterSettingsBtn.addEventListener('click', toggleChapterSettings);
+        chapterSettingsBtn.addEventListener('click', toggleChapterSettings); // Đã thêm hàm
         addPairBtn.addEventListener('click', () => {
             pairsContainer.insertBefore(createPairElement(), pairsContainer.firstChild);
         });
