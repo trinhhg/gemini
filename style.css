@@ -157,6 +157,12 @@ header {
     width: 100%;
 }
 
+.btn.copied {
+    background-color: var(--success-color) !important;
+    color: white !important;
+    transition: background-color 0.3s ease;
+}
+
 input[type="text"], select, textarea {
     width: 100%;
     padding: 12px 15px;
@@ -646,4 +652,11 @@ textarea::-webkit-scrollbar-track {
 @keyframes fadeOut {
     from { opacity: 1; }
     to { opacity: 0; }
+}
+
+/* --- Copy Clipboard Styling --- */
+.btn.copied {
+    background-color: var(--success-color) !important;
+    color: white !important;
+    transition: background-color 0.3s ease;
 }
