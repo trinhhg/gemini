@@ -1108,5 +1108,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 const content = box.querySelector('.content').textContent;
                 copyToClipboard(content, e.target);
             }
-        });
-
+     
+           
