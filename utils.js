@@ -12,18 +12,21 @@ function countWords(text) {
 /**
  * Thực hiện thay thế và highlight các từ đã thay đổi.
  * @param {string} text - Văn bản gốc.
- * @param {Array<Object>} pairs - Mảng các cặp {find, replace}.
- * @param {boolean} matchCase - Có phân biệt chữ hoa/thường hay không.
+ * @param {Array<Object>} pairs - Mảng các cặp {find, replace, matchCase, wholeWord}.
  * @returns {string} Chuỗi HTML với các từ đã được highlight.
  */
-function performReplacement(text, pairs, matchCase) {
+function performReplacement(text, pairs) {
     let highlightedText = text;
-    const flags = matchCase ? 'g' : 'gi';
 
     pairs.forEach(pair => {
         if (pair.find) {
             try {
-                const regex = new RegExp(pair.find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), flags);
+                let findPattern = pair.find.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                if (pair.wholeWord) {
+                    findPattern = '\\b' + findPattern + '\\b';
+                }
+                const flags = pair.matchCase ? 'g' : 'gi';
+                const regex = new RegExp(findPattern, flags);
                 highlightedText = highlightedText.replace(regex, `<span class="highlight">${pair.replace}</span>`);
             } catch (e) {
                 console.error("Lỗi regex không hợp lệ:", pair.find, e);
@@ -69,17 +72,32 @@ function splitChapter(text, numSplits, chapterKeywords) {
     }
 
     const paragraphs = remainingText.split(/\n\s*\n/).filter(p => p.trim() !== '');
-    const totalParagraphs = paragraphs.length;
-    const resultChapters = [];
+    const paragraphWords = paragraphs.map(p => countWords(p));
+    const totalWords = paragraphWords.reduce((a, b) => a + b, 0);
+    const targetWordsPerSplit = totalWords / numSplits;
 
+    const resultChapters = [];
+    let currentWordCount = 0;
     let startPara = 0;
-    for (let i = 0; i < numSplits; i++) {
-        const newTitle = `${chapterTitleInfo.base} ${chapterTitleInfo.number}.${i + 1}${chapterTitleInfo.suffix}`;
-        const endPara = Math.round(totalParagraphs * (i + 1) / numSplits);
-        
+
+    for (let i = 1; i <= numSplits; i++) {
+        const target = i * targetWordsPerSplit;
+        let endPara = startPara;
+
+        while (endPara < paragraphs.length && currentWordCount < target) {
+            currentWordCount += paragraphWords[endPara];
+            endPara++;
+        }
+
+        // Adjust to not overshoot if last
+        if (i === numSplits) endPara = paragraphs.length;
+
         const contentParas = paragraphs.slice(startPara, endPara);
-        const content = contentParas.join('\n\n');
-        
+        let content = contentParas.join('\n\n');
+
+        const newTitle = `${chapterTitleInfo.base} ${chapterTitleInfo.number}.${i}${chapterTitleInfo.suffix}`;
+        content = `${newTitle}\n\n${content}`;
+
         resultChapters.push({ title: newTitle, content: content });
         startPara = endPara;
     }
