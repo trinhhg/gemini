@@ -33,30 +33,29 @@ html, body {
 .app-container {
     display: flex;
     flex-direction: column;
-    /* Loại bỏ max-width để full màn hình, padding vẫn giữ */
-    width: 100%; 
+    width: 100%;
     height: 100%;
     padding: 20px;
     overflow-y: auto;
-    align-items: center; /* Căn giữa nội dung chính */
+    align-items: center;
 }
 
 header {
     width: 100%;
-    max-width: 1200px; /* Giữ max-width cho header để không quá rộng */
+    max-width: 1200px;
     margin-bottom: 20px;
 }
 
 .web-name {
-    text-align: center; /* Căn giữa */
-    font-size: 3rem; /* Font to */
-    font-weight: 700; /* Đậm */
+    text-align: center;
+    font-size: 3rem;
+    font-weight: 700;
     margin-bottom: 5px;
 }
 
 .license-info {
-    text-align: left; /* Căn trái */
-    font-size: 0.9rem; /* Font nhỏ hơn */
+    text-align: left;
+    font-size: 0.9rem;
     color: #666;
     margin-bottom: 15px;
 }
@@ -92,14 +91,14 @@ header {
     max-width: 1200px;
     margin: 0 auto;
     background-color: var(--card-bg-color);
-    border-radius: 24px; /* Bo tròn, style architecture mềm mại */
-    box-shadow: 0 8px 20px var(--shadow-color); /* Shadow nhẹ */
-    border: none; /* Bỏ border, dùng shadow */
+    border-radius: 24px;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    border: none;
     padding: 30px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    min-height: 60vh; /* Đảm bảo chiều cao tối thiểu */
+    min-height: 60vh;
 }
 
 .tab-content {
@@ -116,7 +115,7 @@ header {
 .btn {
     padding: 10px 20px;
     font-size: 1rem;
-    border: none; /* Nút màu xanh dương, hover xanh nhạt, không border */
+    border: none;
     background-color: var(--primary-color);
     color: white;
     border-radius: 20px;
@@ -128,6 +127,7 @@ header {
 .btn:hover:not(:disabled) {
     background-color: var(--primary-hover-color);
 }
+
 .btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -136,12 +136,18 @@ header {
 .btn-danger {
     background-color: var(--danger-color);
 }
-.btn-danger:hover:not(:disabled) { background-color: #e54c50;}
+
+.btn-danger:hover:not(:disabled) {
+    background-color: #e54c50;
+}
 
 .btn-success {
     background-color: var(--success-color);
 }
-.btn-success:hover:not(:disabled) { background-color: #149614;}
+
+.btn-success:hover:not(:disabled) {
+    background-color: #149614;
+}
 
 .full-width-btn {
     width: 100%;
@@ -150,12 +156,13 @@ header {
 input[type="text"], select, textarea {
     width: 100%;
     padding: 12px 15px;
-    border: 2px solid var(--input-border-color); /* Border rõ ràng, không mờ */
+    border: 2px solid var(--input-border-color);
     border-radius: 8px;
     font-size: 1rem;
     font-family: var(--font-family);
     transition: border-color 0.2s;
 }
+
 input[type="text"]:focus, select:focus, textarea:focus {
     border-color: var(--primary-color);
     outline: none;
@@ -164,9 +171,10 @@ input[type="text"]:focus, select:focus, textarea:focus {
 textarea {
     min-height: 150px;
     flex-grow: 1;
-    overflow: auto; /* Có scrollbar, không kéo dài vô hạn */
-    resize: none; /* Cố định kích thước (trừ mobile) */
+    overflow-y: auto;
+    resize: none;
 }
+
 #replace-input, #replace-output {
     min-height: 250px;
 }
@@ -183,12 +191,15 @@ textarea {
 .mode-select-row {
     margin-bottom: 20px;
 }
+
 .control-label {
     white-space: nowrap;
 }
+
 .mode-dropdown {
-    width: auto; /* Chiều rộng chỉ vừa đủ tên chế độ */
+    width: auto;
     min-width: 150px;
+    max-width: 250px;
     flex-grow: 0;
 }
 
@@ -203,10 +214,11 @@ textarea {
     flex-direction: column;
     gap: 15px;
     margin-top: 10px;
-    max-height: 45vh; /* Chiều cao tối đa cho danh sách cặp */
+    max-height: 45vh;
     overflow-y: auto;
     padding-right: 10px;
 }
+
 .replace-pair {
     display: flex;
     align-items: center;
@@ -214,20 +226,24 @@ textarea {
     padding: 5px 0;
     border-bottom: 1px dashed #f0f0f0;
 }
-.replace-pair input { 
-    flex-grow: 1; 
+
+.replace-pair input {
+    flex-grow: 1;
 }
+
 .pair-checkboxes {
     display: flex;
     gap: 15px;
     min-width: 250px;
 }
+
 .checkbox-group {
     display: flex;
     align-items: center;
     gap: 5px;
     white-space: nowrap;
 }
+
 .delete-pair-btn {
     padding: 5px 10px;
     font-size: 0.9rem;
@@ -240,12 +256,12 @@ textarea {
     transition: background-color 0.2s;
     min-width: 60px;
 }
+
 .delete-pair-btn:hover {
     background-color: #e54c50;
     border-color: #e54c50;
 }
 
-/* Khu vực cài đặt chương */
 .chapter-settings-card {
     border: 1px solid #ddd;
     border-radius: 12px;
@@ -253,11 +269,19 @@ textarea {
     margin-top: 20px;
     background-color: #fafafa;
 }
+
+.chapter-settings-card .hint {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
 .chapter-keywords {
     display: flex;
     gap: 10px;
     margin-top: 10px;
 }
+
 .chapter-keywords input {
     flex-grow: 1;
 }
@@ -268,6 +292,7 @@ textarea {
     gap: 10px;
     margin-top: 10px;
 }
+
 .keyword-tag {
     background-color: #eef;
     padding: 5px 12px;
@@ -276,12 +301,16 @@ textarea {
     align-items: center;
     gap: 8px;
 }
+
 .delete-keyword-btn {
-    background: none; border: none; cursor: pointer; color: var(--danger-color); font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--danger-color);
+    font-weight: bold;
     font-size: 1rem;
     padding: 0;
 }
-
 
 /* --- Tab 2: Replace --- */
 .replace-grid {
@@ -300,13 +329,15 @@ textarea {
 
 .toolbar {
     display: flex;
-    justify-content: center; /* Word count căn giữa */
+    justify-content: center;
     align-items: center;
     padding: 5px 0;
 }
+
 .toolbar.text-center {
     justify-content: center;
 }
+
 .word-count-display {
     font-weight: 500;
     color: #555;
@@ -317,7 +348,7 @@ textarea {
 
 .output-area {
     flex-grow: 1;
-    border: 2px solid var(--input-border-color); /* Border rõ ràng */
+    border: 2px solid var(--input-border-color);
     border-radius: 8px;
     padding: 12px 15px;
     overflow-y: auto;
@@ -325,8 +356,9 @@ textarea {
 }
 
 .output-area p {
-    margin-bottom: 1em; /* Tự động cách 1 dòng giữa các đoạn */
+    margin-bottom: 1em;
 }
+
 .output-area p:last-child {
     margin-bottom: 0;
 }
@@ -346,6 +378,7 @@ textarea {
     align-items: center;
     margin-bottom: 15px;
 }
+
 .split-controls .btn {
     min-width: 80px;
     border-radius: 8px;
@@ -353,10 +386,12 @@ textarea {
     color: var(--text-color);
     border: 1px solid #ccc;
 }
+
 .split-controls .btn:hover {
     background-color: #bbb;
     border-color: #bbb;
 }
+
 .split-controls .btn.active {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
@@ -388,17 +423,20 @@ textarea {
     background-color: #fdfdfd;
     overflow: hidden;
 }
+
 .split-result-box .content-wrapper {
     flex-grow: 1;
-    max-height: 200px; /* Chiều cao cố định cho nội dung (để có scroll) */
+    max-height: 200px;
     overflow-y: auto;
     padding-right: 5px;
 }
+
 .split-result-box .content {
     white-space: pre-wrap;
     word-break: break-word;
     margin: 0;
 }
+
 .split-result-box h4 {
     font-weight: 700;
     border-bottom: 1px solid #eee;
@@ -408,41 +446,52 @@ textarea {
 }
 
 /* Layout chia chương (Chia N) */
-.split-layout-n {
-    display: flex;
+.split-layout-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    flex-wrap: wrap;
-}
-.split-layout-n .split-result-box {
-    flex: 1 1 18%; /* Tối đa 5 cột trên desktop */
-    min-width: 180px; /* Đảm bảo min-width */
-}
-.split-layout-n .split-input-box {
-    flex: 1 1 18%;
-    min-width: 180px;
-    border: 2px solid var(--input-border-color);
-    border-radius: 12px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background-color: #fdfdfd;
-    overflow: hidden;
-}
-.split-layout-n .split-input-box textarea {
-    flex-grow: 1;
-    min-height: 150px;
-    resize: none;
-    border: none;
-    padding: 0;
 }
 
+.split-layout-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.split-layout-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.split-layout-5,
+.split-layout-6,
+.split-layout-7,
+.split-layout-8,
+.split-layout-9,
+.split-layout-10 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.split-result-box {
+    flex: 1 1 auto;
+    min-width: 200px;
+}
 
 /* --- Responsive --- */
 @media (max-width: 1024px) {
-    .split-layout-n .split-result-box,
-    .split-layout-n .split-input-box {
-        flex: 1 1 30%; /* Tối đa 3 cột */
+    .split-layout-2,
+    .split-layout-3,
+    .split-layout-4,
+    .split-layout-5,
+    .split-layout-6,
+    .split-layout-7,
+    .split-layout-8,
+    .split-layout-9,
+    .split-layout-10 {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
 }
 
@@ -450,18 +499,24 @@ textarea {
     .app-container {
         padding: 10px;
     }
-    header h1 { font-size: 2rem; }
 
-    .mode-management-row, .settings-actions, .chapter-keywords {
+    .web-name {
+        font-size: 2rem;
+    }
+
+    .mode-management-row,
+    .settings-actions,
+    .chapter-keywords {
         flex-direction: column;
         align-items: stretch;
     }
-    
-    .replace-pair { 
-        flex-direction: column; 
+
+    .replace-pair {
+        flex-direction: column;
         align-items: stretch;
         gap: 5px;
     }
+
     .pair-checkboxes {
         flex-direction: row;
         justify-content: space-around;
@@ -470,21 +525,26 @@ textarea {
     }
 
     .replace-grid {
-        grid-template-columns: 1fr; /* 1 cột trên mobile */
+        grid-template-columns: 1fr;
     }
-    
+
     .card {
         padding: 15px;
     }
 
-    .split-layout-n {
-        flex-direction: column; /* 1 cột trên mobile */
+    .split-layout-2,
+    .split-layout-3,
+    .split-layout-4,
+    .split-layout-5,
+    .split-layout-6,
+    .split-layout-7,
+    .split-layout-8,
+    .split-layout-9,
+    .split-layout-10 {
+        grid-template-columns: 1fr;
     }
-    .split-layout-n .split-result-box,
-    .split-layout-n .split-input-box {
-        flex: 1 1 100%;
-    }
+
     .split-result-box .content-wrapper {
-        max-height: 150px; /* Giảm chiều cao trên mobile */
+        max-height: 150px;
     }
 }
