@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trịnh Hg - Công Cụ Xử Lý Văn Bản</title>
+    <title>Trịnh Hương - Công Cụ Xử Lý Văn Bản</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,8 +12,8 @@
 <body>
     <div class="app-container">
         <header>
-            <h1>Trịnh Hg</h1>
-            <p class="renewal-info">Gia hạn tài khoản: <a href="https://www.facebook.com/">link facebook</a> Giá: 4k/ngày – 25k/tuần – 60k/tháng</p>
+            <h1 class="web-name">Trịnh Hg</h1>
+            <p class="license-info">Gia hạn tài khoản: <a href="[link facebook]" target="_blank">[link facebook]</a> | Giá: 4k/ngày – 25k/tuần – 60k/tháng</p>
         </header>
 
         <nav class="tabs">
@@ -24,16 +24,78 @@
 
         <main class="card">
             <div id="settings" class="tab-content active">
-                <div class="settings-controls">
-                    <div class="control-group mode-select-group">
-                        <label for="mode-select">Chọn chế độ:</label>
-                        <select id="mode-select" class="control-element"></select>
+                <div class="control-group mode-select-row">
+                    <label for="mode-select" class="control-label">Chọn chế độ:</label>
+                    <select id="mode-select" class="control-element mode-dropdown"></select>
+                </div>
+                
+                <div class="control-group mode-management-row">
+                    <button id="add-mode-btn" class="btn">Thêm chế độ mới</button>
+                    <button id="copy-mode-btn" class="btn">Sao chép chế độ</button>
+                    <button id="rename-mode-btn" class="btn">Đổi tên</button>
+                    <button id="delete-mode-btn" class="btn btn-danger">Xóa chế độ</button>
+                    <button id="import-settings-btn" class="btn">Nhập cài đặt</button>
+                    <input type="file" id="import-file-input" style="display: none;" accept=".json">
+                    <button id="export-settings-btn" class="btn">Xuất cài đặt</button>
+                </div>
+                
+                <div class="settings-actions">
+                    <button id="add-pair-btn" class="btn btn-primary">Thêm cặp</button>
+                    <button id="save-settings-btn" class="btn btn-success">Lưu cài đặt</button>
+                </div>
+                
+                <div id="replace-pairs-container" class="replace-pairs-container">
                     </div>
-                    <div class="control-group">
-                        <button id="add-mode-btn" class="btn">Thêm chế độ mới</button>
-                        <button id="copy-mode-btn" class="btn">Sao chép chế độ</button>
-                        <button id="rename-mode-btn" class="btn">Đổi tên</button>
-                        <button id="delete-mode-btn" class="btn btn-danger">Xóa chế độ</button>
+                
+                <hr>
+                <div class="chapter-settings-card">
+                    <h3>Cài đặt nhận diện chương</h3>
+                    <p class="hint">Tính năng dùng cho tab "Chia Chương".</p>
+                    <div class="chapter-keywords">
+                        <input type="text" id="chapter-keyword-input" placeholder="Thêm từ khóa mới (vd: Hồi, Phần)">
+                        <button id="add-keyword-btn" class="btn">Thêm</button>
+                    </div>
+                    <div id="chapter-keywords-list" class="chapter-keywords-list">
+                        </div>
+                </div>
+            </div>
+
+            <div id="replace" class="tab-content">
+                <div class="replace-grid">
+                    <div class="replace-column">
+                        <textarea id="replace-input" placeholder="Nhập văn bản gốc vào đây..."></textarea>
+                        <div class="toolbar text-center">
+                            <span id="replace-word-count" class="word-count-display">Số từ: 0</span>
+                        </div>
+                        <button id="replace-btn" class="btn btn-primary full-width-btn">Thay thế</button>
+                    </div>
+                    <div class="replace-column">
+                        <div id="replace-output" class="output-area" contenteditable="false"></div>
+                        <div class="toolbar text-center">
+                            <span id="output-word-count" class="word-count-display">Số từ: 0</span>
+                        </div>
+                        <button id="copy-output-btn" class="btn full-width-btn">Sao chép</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="split" class="tab-content">
+                <div class="split-controls">
+                    </div>
+                <textarea id="split-input" placeholder="Nhập văn bản có tên chương ở dòng đầu tiên..."></textarea>
+                <div class="toolbar text-center">
+                    <span id="split-input-word-count" class="word-count-display">Số từ: 0</span>
+                </div>
+                <div id="split-output-container">
+                    </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
                         <button id="import-settings-btn" class="btn">Nhập cài đặt</button>
                         <input type="file" id="import-file-input" style="display: none;" accept=".json">
                         <button id="export-settings-btn" class="btn">Xuất cài đặt</button>
