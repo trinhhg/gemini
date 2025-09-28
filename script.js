@@ -111,16 +111,16 @@ document.addEventListener("DOMContentLoaded", () => {
         div.innerHTML = `
             <input type="text" class="find-input" placeholder="Tìm" value="${findVal}">
             <input type="text" class="replace-input" placeholder="Thay thế" value="${replaceVal}">
-            <div class="pair-checkboxes">
-                <div class="checkbox-group">
-                    <input type="checkbox" class="match-case-checkbox" id="match-case-${uniqueId}" ${matchCase ? 'checked' : ''}>
-                    <label for="match-case-${uniqueId}">Match Case</label>
-                </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" class="whole-word-checkbox" id="whole-word-${uniqueId}" ${wholeWord ? 'checked' : ''}>
-                    <label for="whole-word-${uniqueId}">Find Whole Word Only</label>
-                </div>
-            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" class="match-case-checkbox" ${matchCase ? 'checked' : ''}>
+                <span class="slider"></span>
+                Match Case
+            </label>
+            <label class="toggle-switch">
+                <input type="checkbox" class="whole-word-checkbox" ${wholeWord ? 'checked' : ''}>
+                <span class="slider"></span>
+                Find Whole Word Only
+            </label>
             <button class="delete-pair-btn btn btn-danger">Xóa</button>
         `;
         div.querySelector('.delete-pair-btn').addEventListener('click', () => {
@@ -158,11 +158,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const layoutContainer = document.createElement('div');
         layoutContainer.className = `split-layout-${numSplits}`;
 
+        // Ô văn bản gốc
+        const originalBox = document.createElement('div');
+        originalBox.className = 'split-result-box';
+        originalBox.innerHTML = `
+            <h4>Văn bản gốc</h4>
+            <div class="content-wrapper">
+                <div class="content">${splitInput.value.split('\n\n').map(p => `<p>${p}</p>`).join('')}</div>
+            </div>
+            <div class="toolbar text-center">
+                <span class="word-count-display">Số từ: ${countWords(splitInput.value)}</span>
+            </div>
+            <button class="btn copy-split-btn full-width-btn">Sao chép gốc</button>
+        `;
+        layoutContainer.appendChild(originalBox);
+
         chapters.forEach((chapter, index) => {
             const box = document.createElement('div');
             box.className = 'split-result-box';
             const contentWithTitle = chapter.title + '\n\n' + chapter.content;
             box.innerHTML = `
+                <h4>${chapter.title}</h4>
                 <div class="content-wrapper">
                     <div class="content">${contentWithTitle.split('\n\n').map(p => `<p>${p}</p>`).join('')}</div>
                 </div>
@@ -223,13 +239,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (chapterSettingsCard.style.display === 'none') {
             pairsContainer.style.display = 'none';
             chapterSettingsCard.style.display = 'block';
-            addPairBtn.disabled = true;
-            saveSettingsBtn.textContent = 'Lưu và quay lại';
+            addPairBtn.style.display = 'none';
         } else {
             pairsContainer.style.display = 'flex';
             chapterSettingsCard.style.display = 'none';
-            addPairBtn.disabled = false;
-            saveSettingsBtn.textContent = 'Lưu cài đặt';
+            addPairBtn.style.display = 'inline-block';
         }
     }
 
@@ -413,7 +427,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.target.classList.contains('copy-split-btn')) {
                 const index = parseInt(e.target.dataset.chapterIndex, 10);
                 const box = e.target.closest('.split-result-box');
-                const content = box.querySelector('.content').innerHTML.replace(/<\/?p>/g, '\n').replace(/\n\n/g, '\n\n');
+                const content = box.querySelector('.content').innerHTML.replace(/<\/?p>/g, '\n\n').replace(/\n\n/g, '\n\n');
                 copyToClipboard(content, e.target);
             }
         });
