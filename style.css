@@ -13,28 +13,23 @@
     --font-family: 'Inter', sans-serif;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     font-family: var(--font-family);
     background-color: var(--bg-color);
     color: var(--text-color);
     font-size: 16px;
     line-height: 1.6;
-    overflow-x: hidden; /* Ngăn thanh cuộn ngang */
+    overflow-x: hidden;
 }
 
 .app-container {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
     padding: 10px;
     align-items: center;
 }
@@ -95,338 +90,17 @@ header {
     box-shadow: 0 8px 20px var(--shadow-color);
     border: none;
     padding: 20px;
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
-.tab-content {
-    display: none;
-    flex-direction: column;
-    height: 100%;
-}
-
-.tab-content.active {
-    display: flex;
-}
-
-/* --- Controls & Buttons --- */
-.btn {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    background-color: var(--primary-color);
-    color: white;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-weight: 500;
-}
-
-.btn:hover:not(:disabled) {
-    background-color: var(--primary-hover-color);
-}
-
-.btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.btn-danger {
-    background-color: var(--danger-color);
-    text-align: center; /* Căn giữa chữ Xóa */
-}
-
-.btn-danger:hover:not(:disabled) {
-    background-color: #e54c50;
-}
-
-.btn-success {
-    background-color: var(--success-color);
-}
-
-.btn-success:hover:not(:disabled) {
-    background-color: #149614;
-}
-
-.full-width-btn {
-    width: 100%;
-}
-
-input[type="text"], select, textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid var(--input-border-color);
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: var(--font-family);
-    transition: border-color 0.2s;
-    height: 42px; /* Cố định chiều cao input */
-}
-
-input[type="text"]:focus, select:focus, textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
-}
-
-textarea {
-    width: 100%;
-    padding: 12px 15px;
-    border: 2px solid var(--input-border-color);
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: var(--font-family);
-    resize: none; /* Ngăn resize */
-    height: 300px; /* Cố định chiều cao */
-    overflow-y: auto; /* Thanh cuộn dọc */
-}
-
-/* --- Tab 1: Settings --- */
-.control-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.mode-select-row {
-    margin-bottom: 20px;
-}
-
-.control-label {
-    white-space: nowrap;
-}
-
-.mode-dropdown {
-    width: auto;
-    min-width: 150px;
-    max-width: 250px;
-    flex-grow: 0;
-}
-
-.settings-actions {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.replace-pairs-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 10px;
-    max-height: 45vh;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.replace-pair {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 5px 0;
-    border-bottom: 1px dashed #f0f0f0;
-}
-
-.replace-pair input {
-    flex-grow: 1;
-    height: 42px;
-}
-
-.pair-checkboxes {
-    display: flex;
-    gap: 15px;
-    min-width: 250px;
-}
-
-.toggle-switch {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.toggle-switch input {
-    display: none;
-}
-
-.toggle-switch .slider {
-    position: relative;
-    width: 50px; /* To tròn hơn */
-    height: 25px; /* To tròn hơn */
-    background-color: #ccc;
-    border-radius: 25px; /* Tròn hơn */
-    transition: background-color 0.2s;
-}
-
-.toggle-switch .slider:before {
-    position: absolute;
-    content: "M"; /* Ký hiệu M cho Match Case */
-    height: 21px;
-    width: 21px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    border-radius: 50%;
-    transition: transform 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    color: #333;
-}
-
-.toggle-switch input:checked + .slider:before {
-    transform: translateX(25px);
-}
-
-.toggle-switch input:checked + .slider {
-    background-color: var(--primary-color); /* Xanh dương cho Match */
-}
-
-.toggle-switch:nth-child(2) .slider:before {
-    content: "F"; /* Ký hiệu F cho Find Whole Word Only */
-}
-
-.toggle-switch:nth-child(2) input:checked + .slider {
-    background-color: var(--success-color); /* Xanh lá cho Find Whole Word Only */
-}
-
-.toggle-switch label {
-    display: none; /* Xóa chữ label */
-}
-
-.delete-pair-btn {
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    border: 1px solid var(--danger-color);
-    background-color: var(--danger-color);
-    color: white;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    min-width: 60px;
-    height: 42px;
-    line-height: 42px;
-    text-align: center;
-}
-
-.delete-pair-btn:hover {
-    background-color: #e54c50;
-    border-color: #e54c50;
-}
-
-#chapter-settings-card {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 20px;
-    background-color: #fafafa;
-}
-
-.chapter-settings-card .hint {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.chapter-keywords {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.chapter-keywords input {
-    flex-grow: 1;
-}
-
-.chapter-keywords-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.keyword-tag {
-    background-color: #eef;
-    padding: 5px 12px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.delete-keyword-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--danger-color);
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 0;
-}
-
-/* --- Tab 2: Replace --- */
-.replace-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    height: 100%;
-    flex-grow: 1;
-}
-
-.replace-column {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.toolbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5px 0;
-}
-
-.toolbar.text-center {
-    justify-content: center;
-}
-
-.word-count-display {
-    font-weight: 500;
-    color: #555;
-    background-color: #eee;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-.output-area {
-    flex-grow: 1;
-    border: 2px solid var(--input-border-color);
-    border-radius: 8px;
-    padding: 12px 15px;
-    overflow-y: auto;
-    background-color: #fdfdfd;
-    word-break: break-word;
-    white-space: pre-wrap;
-}
-
-.output-area p {
-    margin-bottom: 1em;
-}
-
-.output-area p:last-child {
-    margin-bottom: 0;
-}
-
-.highlight {
-    background-color: var(--highlight-color);
-    border-radius: 3px;
-    padding: 0 2px;
-    font-weight: 500;
+/* --- Ô nhập văn bản --- */
+textarea.textbox {
+  width: 100%;
+  height: 300px;        /* cố định chiều cao */
+  resize: none;         /* không cho kéo */
+  overflow-y: auto;     /* cuộn dọc trong khung */
+  overflow-x: hidden;   /* ẩn cuộn ngang */
 }
 
 /* --- Tab 3: Chia Chương --- */
@@ -438,63 +112,24 @@ textarea {
     margin-bottom: 15px;
 }
 
-.split-controls .btn {
-    min-width: 80px;
-    border-radius: 8px;
-    background-color: #ccc;
-    color: var(--text-color);
-    border: 1px solid #ccc;
-}
-
-.split-controls .btn:hover {
-    background-color: #bbb;
-    border-color: #bbb;
-}
-
-.split-controls .btn.active {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-    color: white;
-}
-
-#split-input {
-    min-height: 150px;
-    margin-bottom: 10px;
-}
-
 #split-output-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    overflow-y: auto;
-    flex-grow: 1;
-    align-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    width: 100%;
     padding-top: 10px;
 }
 
 .split-result-box {
-    border: 2px solid var(--input-border-color);
+    border: 1px solid var(--input-border-color);
     border-radius: 12px;
     padding: 15px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     background-color: #fdfdfd;
-    overflow: hidden;
-    flex: 1 1 200px; /* Linh hoạt cho bố cục */
-}
-
-.split-result-box .content-wrapper {
-    flex-grow: 1;
-    max-height: 200px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
-.split-result-box .content {
-    white-space: pre-wrap;
-    word-break: break-word;
-    margin: 0;
+    height: 200px;       /* cố định khung */
+    overflow-y: auto;    /* cuộn trong ô */
 }
 
 .split-result-box h4 {
@@ -505,122 +140,9 @@ textarea {
     white-space: pre-wrap;
 }
 
-/* Layout chia chương (Chia N) */
-.split-layout-2 {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-}
-
-.split-layout-3 {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
-
-.split-layout-4 {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-}
-
-.split-layout-5,
-.split-layout-6,
-.split-layout-7,
-.split-layout-8,
-.split-layout-9,
-.split-layout-10 {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-}
-
-.split-result-box {
-    flex: 1 1 auto;
-    min-width: 200px;
-}
-
-/* --- Responsive --- */
-@media (max-width: 1024px) {
-    .split-layout-2,
-    .split-layout-3,
-    .split-layout-4,
-    .split-layout-5,
-    .split-layout-6,
-    .split-layout-7,
-    .split-layout-8,
-    .split-layout-9,
-    .split-layout-10 {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
-    .app-container {
-        padding: 10px;
-    }
-
-    .web-name {
-        font-size: 2rem;
-    }
-
-    .mode-management-row,
-    .settings-actions,
-    .chapter-keywords {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .replace-pair {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 5px;
-    }
-
-    .pair-checkboxes {
-        flex-direction: row;
-        justify-content: space-around;
-        min-width: auto;
-        width: 100%;
-    }
-
-    .replace-grid {
+    #split-output-container {
         grid-template-columns: 1fr;
     }
-
-    .card {
-        padding: 15px;
-    }
-
-    .split-layout-2,
-    .split-layout-3,
-    .split-layout-4,
-    .split-layout-5,
-    .split-layout-6,
-    .split-layout-7,
-    .split-layout-8,
-    .split-layout-9,
-    .split-layout-10 {
-        grid-template-columns: 1fr;
-    }
-
-    .split-result-box .content-wrapper {
-        max-height: 150px;
-    }
-}
-
-/* Popup for notifications */
-.popup {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: var(--success-color);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    display: none;
-    animation: fadeIn 0.3s;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }
