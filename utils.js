@@ -70,27 +70,10 @@ function splitChapter(text, numSplits, chapterKeywords) {
         chapterTitleInfo.suffix = '';
     }
 
-    let paragraphs = remainingText.split(/\n\s*\n/).filter(p => p.trim() !== '');
-    let paragraphWords = paragraphs.map(p => countWords(p));
-    let totalWords = paragraphWords.reduce((a, b) => a + b, 0);
+    const paragraphs = remainingText.split(/\n\s*\n/).filter(p => p.trim() !== '');
+    const paragraphWords = paragraphs.map(p => countWords(p));
+    const totalWords = paragraphWords.reduce((a, b) => a + b, 0);
     const targetWordsPerSplit = Math.floor(totalWords / numSplits);
-
-    if (paragraphs.length < numSplits) {
-        // Fallback: Split by single lines and group by sentences
-        const fallbackLines = remainingText.split('\n').filter(l => l.trim() !== '');
-        paragraphs = [];
-        let currentPara = [];
-        fallbackLines.forEach(line => {
-            currentPara.push(line);
-            if (line.match(/[.!?]$/)) {
-                paragraphs.push(currentPara.join(' '));
-                currentPara = [];
-            }
-        });
-        if (currentPara.length) paragraphs.push(currentPara.join(' '));
-        paragraphWords = paragraphs.map(p => countWords(p));
-        totalWords = paragraphWords.reduce((a, b) => a + b, 0);
-    }
 
     const resultChapters = [];
     let currentWordCount = 0;
