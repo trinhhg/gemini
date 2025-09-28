@@ -779,9 +779,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const content = box.querySelector('.content').textContent;
                 copyToClipboard(content, e.target);
             }
-        });
-    }
-);    const replaceOutput = document.getElementById('replace-output');
+        });  
+   
+    const replaceOutput = document.getElementById('replace-output');
     const copyOutputBtn = document.getElementById('copy-output-btn');
 
     // Split Tab
