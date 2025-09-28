@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const replaceInput = document.getElementById('replace-input');
     const replaceWordCountDisplay = document.getElementById('replace-word-count');
     const replaceBtn = document.getElementById('replace-btn');
-    const replaceOriginal = document.getElementById('replace-original');
     const replaceOutput = document.getElementById('replace-output');
     const outputWordCountDisplay = document.getElementById('output-word-count');
     const copyOutputBtn = document.getElementById('copy-output-btn');
@@ -32,6 +31,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const splitInput = document.getElementById('split-input');
     const splitInputWordCountDisplay = document.getElementById('split-input-word-count');
     const splitOutputContainer = document.getElementById('split-output-container');
+
+    const popup = document.getElementById('popup');
 
     // ====================== STATE ======================
     let settings = {
@@ -47,6 +48,12 @@ document.addEventListener("DOMContentLoaded", () => {
     updateUI();
     setupEventListeners();
     createSplitButtons();
+
+    // Mặc định chia 2 khi mở tab Chia Chương
+    const defaultSplitBtn = splitControls.querySelector('[data-splits="2"]');
+    if (defaultSplitBtn) {
+        defaultSplitBtn.click();
+    }
 
     // ====================== UI UPDATE FUNCTIONS ======================
     function updateUI() {
@@ -68,12 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 tab.classList.add('active');
             }
         });
-        if (targetTabId === 'replace') {
-            replaceWordCountDisplay.textContent = `Số từ: ${countWords(replaceInput.value)}`;
-            replaceOriginal.innerHTML = `<p>${replaceInput.value.replace(/\n/g, '<br>')}</p>`;
-            outputWordCountDisplay.textContent = `Số từ: ${countWords(replaceOutput.innerText)}`;
-        } else if (targetTabId === 'split') {
-            splitInputWordCountDisplay.textContent = `Số từ: ${countWords(splitInput.value)}`;
+        if (targetTabId === 'split') {
+            const activeSplitBtn = splitControls.querySelector('.active');
+            if (activeSplitBtn) {
+                activeSplitBtn.click();
+            } else {
+                defaultSplitBtn.click();
+            }
         }
     }
 
@@ -111,12 +119,10 @@ document.addEventListener("DOMContentLoaded", () => {
             <label class="toggle-switch">
                 <input type="checkbox" class="match-case-checkbox" ${matchCase ? 'checked' : ''}>
                 <span class="slider"></span>
-                Match Case
             </label>
             <label class="toggle-switch">
                 <input type="checkbox" class="whole-word-checkbox" ${wholeWord ? 'checked' : ''}>
                 <span class="slider"></span>
-                Find Whole Word Only
             </label>
             <button class="delete-pair-btn btn btn-danger">Xóa</button>
         `;
@@ -127,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function createSplitButtons() {
-        splitControls.innerHTML = '';
+        splitControls.innerHTML = ''; // Xóa nút cũ
         for (let i = 2; i <= 10; i++) {
             const button = document.createElement('button');
             button.className = 'btn split-btn';
@@ -205,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         currentMode.pairs = newPairs;
         saveSettings();
-        alert('Đã lưu cài đặt cho chế độ: ' + settings.activeMode);
+        showPopup('Đã lưu cài đặt cho chế độ: ' + settings.activeMode);
         if (chapterSettingsCard.style.display !== 'none') {
             toggleChapterSettings();
         }
@@ -232,16 +238,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function toggleChapterSettings() {
-        if (chapterSettingsCard.style.display === 'none') {
-            pairsContainer.style.display = 'none';
-            chapterSettingsCard.style.display = 'block';
-            addPairBtn.style.display = 'none';
-        } else {
-            pairsContainer.style.display = 'flex';
-            chapterSettingsCard.style.display = 'none';
-            addPairBtn.style.display = 'inline-block';
-        }
+    function showPopup(message) {
+        popup.textContent = message;
+        popup.style.display = 'block';
+        setTimeout(() => {
+            popup.style.display = 'none';
+        }, 3000);
     }
 
     // ====================== EVENT HANDLERS ======================
@@ -263,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
             saveSettings();
             updateUI();
         } else if (name) {
-            alert('Tên chế độ đã tồn tại!');
+            showPopup('Tên chế độ đã tồn tại!');
         }
     }
 
@@ -275,7 +277,7 @@ document.addEventListener("DOMContentLoaded", () => {
             saveSettings();
             updateUI();
         } else if (newName) {
-            alert('Tên chế độ đã tồn tại!');
+            showPopup('Tên chế độ đã tồn tại!');
         }
     }
 
@@ -289,13 +291,13 @@ document.addEventListener("DOMContentLoaded", () => {
             saveSettings();
             updateUI();
         } else if (newName) {
-            alert('Tên mới không hợp lệ hoặc đã tồn tại.');
+            showPopup('Tên mới không hợp lệ hoặc đã tồn tại.');
         }
     }
 
     function handleDeleteMode() {
         if (Object.keys(settings.modes).length <= 1) {
-            alert('Không thể xóa chế độ cuối cùng.');
+            showPopup('Không thể xóa chế độ cuối cùng.');
             return;
         }
         if (confirm(`Bạn có chắc muốn xóa chế độ "${settings.activeMode}"?`)) {
@@ -329,12 +331,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     settings = importedSettings;
                     saveSettings();
                     updateUI();
-                    alert('Nhập cài đặt thành công!');
+                    showPopup('Nhập cài đặt thành công!');
                 } else {
-                    alert('Tệp cài đặt không hợp lệ.');
+                    showPopup('Tệp cài đặt không hợp lệ.');
                 }
             } catch (error) {
-                alert('Lỗi khi đọc tệp JSON.');
+                showPopup('Lỗi khi đọc tệp JSON.');
             }
         };
         reader.readAsText(file);
@@ -345,11 +347,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const inputText = replaceInput.value;
         if (!mode || !inputText) return;
 
-        replaceOriginal.innerHTML = `<p>${inputText.replace(/\n/g, '<br>')}</p>`;
         const resultHTML = performReplacement(inputText, mode.pairs);
         replaceOutput.innerHTML = resultHTML;
         outputWordCountDisplay.textContent = `Số từ: ${countWords(replaceOutput.innerText)}`;
-        replaceInput.value = ''; // Xóa văn bản gốc sau khi thay thế
+        replaceInput.value = '';
         replaceWordCountDisplay.textContent = 'Số từ: 0';
     }
 
