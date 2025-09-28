@@ -52,21 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
     setupEventListeners();
     createSplitButtons();
 
-    // Set styles for scrolling and resize
-    tabContents.forEach(content => {
-        content.style.overflow = 'visible';
-    });
-    if (elSplitOutputContainer) {
-        elSplitOutputContainer.style.overflow = 'visible';
-        elSplitOutputContainer.style.height = 'auto';
-    }
-    if (elReplaceInput) elReplaceInput.style.resize = 'none';
-    if (elSplitInput) elSplitInput.style.resize = 'none';
-
-    // Auto-click default split button (Chia 2)
+    // Auto-click default split button (Chia 2) and render 2 output placeholders
     const defaultSplitBtn = elSplitControls.querySelector('[data-splits="2"]');
     if (defaultSplitBtn) {
         defaultSplitBtn.click();
+        renderPlaceholders(2); // Render 2 output boxes
     }
 
     // ====================== UI UPDATE FUNCTIONS ======================
@@ -83,9 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
         tabs.forEach(tab => {
             tab.classList.toggle('active', tab.dataset.tab === targetTabId);
         });
-        if (targetTabId === 'split') {
+        if (targetTabId === 'split' && defaultSplitBtn) {
             const activeSplitBtn = elSplitControls.querySelector('.active');
             (activeSplitBtn || defaultSplitBtn)?.click();
+            renderPlaceholders(2); // Always render 2 output boxes on tab switch
         }
     }
 
@@ -143,7 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
             button.dataset.splits = i;
             elSplitControls.appendChild(button);
         }
-        // Add Chia Chương button
         const chiaChuongBtn = document.createElement('button');
         chiaChuongBtn.type = 'button';
         chiaChuongBtn.className = 'btn chia-chuong-btn';
@@ -392,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
             elSplitControls.querySelectorAll('.split-btn').forEach(btn => btn.classList.remove('active'));
             target.classList.add('active');
             currentNumSplits = parseInt(target.dataset.splits, 10);
-            renderPlaceholders(currentNumSplits);
+            renderPlaceholders(currentNumSplits - 1); // Render (numSplits - 1) output boxes
         } else if (target.classList.contains('chia-chuong-btn')) {
             const text = elSplitInput.value;
             if (!text || !text.trim()) {
@@ -400,8 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             const chapters = splitChapter(text, currentNumSplits, settings.chapterKeywords);
-            renderSplitOutput(chapters);
-            // Do not clear input as per request
+            renderSplitOutput(chapters.slice(0, currentNumSplits - 1)); // Limit to (numSplits - 1) chapters
         }
     }
 
@@ -477,7 +466,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (!box) return;
                     const contentEl = box.querySelector('.content');
                     if (!contentEl) return;
-                    const raw = contentEl.innerHTML.replace(/<\/p>\s*<p>/g, '\n\n').replace(/<\/?p>|<br>/g, '\n').replace(/&quot;/g, '"'); // Fix &quot; in copy
+                    const raw = contentEl.innerHTML.replace(/<\/p>\s*<p>/g, '\n\n').replace(/<\/?p>|<br>/g, '\n').replace(/&quot;/g, '"');
                     copyToClipboard(raw, e.target);
                 }
             });
@@ -563,7 +552,7 @@ document.addEventListener("DOMContentLoaded", () => {
         pushCurrent();
 
         if (chapters.length >= numSplits) {
-            return chapters.slice(0, chapters.length);
+            return chapters.slice(0, numSplits);
         }
 
         const totalWords = countWords(text);
@@ -585,7 +574,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        return result;
+        return result.slice(0, numSplits);
     }
 
     function copyToClipboard(text, triggerElement = null) {
@@ -593,7 +582,7 @@ document.addEventListener("DOMContentLoaded", () => {
             showPopup('Không có nội dung để sao chép.');
             return;
         }
-        text = text.replace(/&quot;/g, '"'); // Ensure &quot; is converted back to " in copied text
+        text = text.replace(/&quot;/g, '"');
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text).then(() => {
                 showPopup('Đã sao chép vào clipboard!');
